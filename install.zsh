@@ -2,21 +2,13 @@
 
 bootstrap_repo="$HOME/.local/share/caelestia"
 bootstrap_script="$bootstrap_repo/install.zsh"
-current_script="${0:A}"
-
-if [[ "$current_script" != "$bootstrap_script" ]]; then
-  if [[ ! -d "$bootstrap_repo/.git" ]]; then
-    if [[ -e "$bootstrap_repo" ]]; then
-      echo "Bootstrap failed: $bootstrap_repo exists but is not a git clone." >&2
-      exit 1
-    fi
-
-    mkdir -p -- "$HOME/.local/share" || exit 1
-    git clone https://github.com/illustriousness/caelestia.git "$bootstrap_repo" || exit 1
-  fi
+if [[ "${CAELESTIA_BOOTSTRAPPED:-0}" != "1" ]]; then
+  mkdir -p -- "$HOME/.local/share" || exit 1
+  rm -rf -- "$bootstrap_repo" || exit 1
+  git clone https://github.com/illustriousness/arch_caelestia.git "$bootstrap_repo" || exit 1
 
   cd "$bootstrap_repo" || exit 1
-  exec zsh "$bootstrap_script" "$@"
+  CAELESTIA_BOOTSTRAPPED=1 exec zsh "$bootstrap_script" "$@"
 fi
 
 show_help() {
@@ -175,15 +167,19 @@ sh_read() {
   printf '%s' "$value"
 }
 
+require_materialyoucolor() {
+  python -c 'from materialyoucolor.hct import Hct' >/dev/null 2>&1
+}
+
 backup_existing() {
-  local path="$1"
+  local target_path="$1"
   local backup_root="/home/lyc/.config/bak"
   local ts safe_name dest
 
   mkdir -p -- "$backup_root" || return 1
 
   ts="$(date +%Y%m%d-%H%M%S)"
-  safe_name="${path#/}"
+  safe_name="${target_path#/}"
   safe_name="${safe_name//\//__}"
   dest="$backup_root/${safe_name}.${ts}"
 
@@ -191,25 +187,25 @@ backup_existing() {
     dest="$backup_root/${safe_name}.${ts}-$RANDOM"
   done
 
-  mv -- "$path" "$dest" || return 1
+  mv -- "$target_path" "$dest" || return 1
   log "Backed up existing path to $dest"
   return 0
 }
 
 confirm_overwrite() {
-  local path="$1"
+  local target_path="$1"
   local confirm
 
-  if [[ -e "$path" || -L "$path" ]]; then
+  if [[ -e "$target_path" || -L "$target_path" ]]; then
     if (( flag_noconfirm )); then
-      input "$path already exists. Overwrite? [Y/n]"
+      input "$target_path already exists. Overwrite? [Y/n]"
       log 'Moving existing path to backup...'
-      backup_existing "$path" || {
+      backup_existing "$target_path" || {
         log 'Backup failed. Exiting...'
         exit 1
       }
     else
-      input "$path already exists. Overwrite? [Y/n] " -n
+      input "$target_path already exists. Overwrite? [Y/n] " -n
       confirm="$(sh_read)" || exit 1
       echo
 
@@ -218,7 +214,7 @@ confirm_overwrite() {
         return 1
       else
         log 'Moving existing path to backup...'
-        backup_existing "$path" || {
+        backup_existing "$target_path" || {
           log 'Backup failed. Exiting...'
           exit 1
         }
@@ -334,16 +330,16 @@ if confirm_overwrite "$config/foot"; then
 fi
 
 # Fish
-if confirm_overwrite "$config/fish"; then
-  log 'Installing fish config...'
-  ln -s -- "$(realpath fish)" "$config/fish"
-fi
+# if confirm_overwrite "$config/fish"; then
+#   log 'Installing fish config...'
+#   ln -s -- "$(realpath fish)" "$config/fish"
+# fi
 
-# Fastfetch
-if confirm_overwrite "$config/fastfetch"; then
-  log 'Installing fastfetch config...'
-  ln -s -- "$(realpath fastfetch)" "$config/fastfetch"
-fi
+# # Fastfetch
+# if confirm_overwrite "$config/fastfetch"; then
+#   log 'Installing fastfetch config...'
+#   ln -s -- "$(realpath fastfetch)" "$config/fastfetch"
+# fi
 
 # Uwsm
 if confirm_overwrite "$config/uwsm"; then
@@ -352,10 +348,10 @@ if confirm_overwrite "$config/uwsm"; then
 fi
 
 # Btop
-if confirm_overwrite "$config/btop"; then
-  log 'Installing btop config...'
-  ln -s -- "$(realpath btop)" "$config/btop"
-fi
+# if confirm_overwrite "$config/btop"; then
+#   log 'Installing btop config...'
+#   ln -s -- "$(realpath btop)" "$config/btop"
+# fi
 
 # Install spicetify
 if (( flag_spotify )); then
@@ -458,13 +454,29 @@ if (( flag_zen )); then
 fi
 
 # Generate scheme stuff if needed
+if ! require_materialyoucolor; then
+  log 'Missing Python dependency: materialyoucolor'
+  log "Install it, then rerun install.zsh. Try: $aur_helper -S python-materialyoucolor"
+  log 'Fallback: python -m pip install --user materialyoucolor'
+  exit 1
+fi
+
 if [[ ! -f "$state/caelestia/scheme.json" ]]; then
-  caelestia scheme set -n shadotheme
+  caelestia scheme set -n shadotheme || {
+    log 'Failed to set scheme via caelestia.'
+    exit 1
+  }
   sleep 0.5
-  hyprctl reload
+  hyprctl reload || {
+    log 'Failed to reload Hyprland via hyprctl.'
+    exit 1
+  }
 fi
 
 # Start the shell
-caelestia shell -d >/dev/null
+caelestia shell -d >/dev/null || {
+  log 'Failed to start caelestia shell.'
+  exit 1
+}
 
 log 'Done!'
