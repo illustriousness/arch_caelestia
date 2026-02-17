@@ -1,0 +1,2775 @@
+diff -ruN orig/modules/controlcenter/NavRail.qml new/modules/controlcenter/NavRail.qml
+--- orig/modules/controlcenter/NavRail.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/NavRail.qml	2026-02-17 19:34:42.584081237 +0800
+@@ -15,6 +15,25 @@
+     required property Session session
+     required property bool initialOpeningComplete
+ 
++    function localizePaneLabel(label: string): string {
++        switch (label) {
++        case "network":
++            return "网络";
++        case "bluetooth":
++            return "蓝牙";
++        case "audio":
++            return "音频";
++        case "appearance":
++            return "外观";
++        case "taskbar":
++            return "任务栏";
++        case "launcher":
++            return "启动器";
++        default:
++            return label;
++        }
++    }
++
+     implicitWidth: layout.implicitWidth + Appearance.padding.larger * 4
+     implicitHeight: layout.implicitHeight + Appearance.padding.large * 2
+ 
+@@ -89,7 +108,7 @@
+                     anchors.verticalCenter: parent.verticalCenter
+                     anchors.leftMargin: Appearance.spacing.normal
+ 
+-                    text: qsTr("Float window")
++                    text: qsTr("悬浮窗口")
+                     color: Colours.palette.m3onPrimaryContainer
+                     opacity: root.session.navExpanded ? 1 : 0
+ 
+@@ -210,7 +229,7 @@
+                 anchors.leftMargin: Appearance.spacing.normal
+ 
+                 opacity: 0
+-                text: item.label
++                text: root.localizePaneLabel(item.label)
+                 color: item.active ? Colours.palette.m3onSecondaryContainer : Colours.palette.m3onSurface
+                 font.capitalization: Font.Capitalize
+             }
+@@ -222,7 +241,7 @@
+                 anchors.top: icon.bottom
+                 anchors.topMargin: Appearance.spacing.small / 2
+ 
+-                text: item.label
++                text: root.localizePaneLabel(item.label)
+                 font.pointSize: Appearance.font.size.small
+                 font.capitalization: Font.Capitalize
+             }
+diff -ruN orig/modules/controlcenter/WindowTitle.qml new/modules/controlcenter/WindowTitle.qml
+--- orig/modules/controlcenter/WindowTitle.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/WindowTitle.qml	2026-02-17 19:34:42.584204536 +0800
+@@ -10,6 +10,25 @@
+     required property ShellScreen screen
+     required property Session session
+ 
++    function localizePaneLabel(label: string): string {
++        switch (label) {
++        case "network":
++            return "网络";
++        case "bluetooth":
++            return "蓝牙";
++        case "audio":
++            return "音频";
++        case "appearance":
++            return "外观";
++        case "taskbar":
++            return "任务栏";
++        case "launcher":
++            return "启动器";
++        default:
++            return label;
++        }
++    }
++
+     implicitHeight: text.implicitHeight + Appearance.padding.normal
+     color: Colours.tPalette.m3surfaceContainer
+ 
+@@ -19,7 +38,7 @@
+         anchors.horizontalCenter: parent.horizontalCenter
+         anchors.bottom: parent.bottom
+ 
+-        text: qsTr("Caelestia Settings - %1").arg(root.session.active)
++        text: qsTr("Caelestia 设置 - %1").arg(root.localizePaneLabel(root.session.active))
+         font.capitalization: Font.Capitalize
+         font.pointSize: Appearance.font.size.larger
+         font.weight: 500
+diff -ruN orig/modules/controlcenter/appearance/AppearancePane.qml new/modules/controlcenter/appearance/AppearancePane.qml
+--- orig/modules/controlcenter/appearance/AppearancePane.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/AppearancePane.qml	2026-02-17 23:31:07.634682414 +0800
+@@ -109,7 +109,7 @@
+                 StyledText {
+                     Layout.alignment: Qt.AlignHCenter
+                     Layout.bottomMargin: Appearance.spacing.normal
+-                    text: qsTr("Wallpaper")
++                    text: qsTr("壁纸")
+                     font.pointSize: Appearance.font.size.extraLarge
+                     font.weight: 600
+                 }
+@@ -173,7 +173,7 @@
+                         spacing: Appearance.spacing.smaller
+ 
+                         StyledText {
+-                            text: qsTr("Appearance")
++                            text: qsTr("外观")
+                             font.pointSize: Appearance.font.size.large
+                             font.weight: 500
+                         }
+diff -ruN orig/modules/controlcenter/appearance/sections/AnimationsSection.qml new/modules/controlcenter/appearance/sections/AnimationsSection.qml
+--- orig/modules/controlcenter/appearance/sections/AnimationsSection.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/sections/AnimationsSection.qml	2026-02-17 23:31:07.637314275 +0800
+@@ -15,7 +15,7 @@
+ 
+     required property var rootPane
+ 
+-    title: qsTr("Animations")
++    title: qsTr("动画")
+     showBackground: true
+ 
+     SectionContainer {
+@@ -24,7 +24,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Animation duration scale")
++            label: qsTr("动画时长缩放")
+             value: rootPane.animDurationsScale
+             from: 0.1
+             to: 5.0
+diff -ruN orig/modules/controlcenter/appearance/sections/BackgroundSection.qml new/modules/controlcenter/appearance/sections/BackgroundSection.qml
+--- orig/modules/controlcenter/appearance/sections/BackgroundSection.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/sections/BackgroundSection.qml	2026-02-17 23:31:07.640030398 +0800
+@@ -15,11 +15,11 @@
+ 
+     required property var rootPane
+ 
+-    title: qsTr("Background")
++    title: qsTr("背景")
+     showBackground: true
+ 
+     SwitchRow {
+-        label: qsTr("Background enabled")
++        label: qsTr("启用背景")
+         checked: rootPane.backgroundEnabled
+         onToggled: checked => {
+             rootPane.backgroundEnabled = checked;
+@@ -29,13 +29,13 @@
+ 
+     StyledText {
+         Layout.topMargin: Appearance.spacing.normal
+-        text: qsTr("Desktop Clock")
++        text: qsTr("桌面时钟")
+         font.pointSize: Appearance.font.size.larger
+         font.weight: 500
+     }
+ 
+     SwitchRow {
+-        label: qsTr("Desktop Clock enabled")
++        label: qsTr("启用桌面时钟")
+         checked: rootPane.desktopClockEnabled
+         onToggled: checked => {
+             rootPane.desktopClockEnabled = checked;
+@@ -59,28 +59,28 @@
+         }
+ 
+         StyledText {
+-            text: qsTr("Positioning")
++            text: qsTr("定位")
+             font.pointSize: Appearance.font.size.larger
+             font.weight: 500
+         }
+ 
+         SplitButtonRow {
+-            label: qsTr("Vertical Position")
++            label: qsTr("垂直位置")
+             enabled: rootPane.desktopClockEnabled
+ 
+             menuItems: [
+                 MenuItem {
+-                    text: qsTr("Top")
++                    text: qsTr("顶部")
+                     icon: "vertical_align_top"
+                     property string val: "top"
+                 },
+                 MenuItem {
+-                    text: qsTr("Middle")
++                    text: qsTr("中间")
+                     icon: "vertical_align_center"
+                     property string val: "middle"
+                 },
+                 MenuItem {
+-                    text: qsTr("Bottom")
++                    text: qsTr("底部")
+                     icon: "vertical_align_bottom"
+                     property string val: "bottom"
+                 }
+@@ -98,23 +98,23 @@
+         }
+ 
+         SplitButtonRow {
+-            label: qsTr("Horizontal Position")
++            label: qsTr("水平位置")
+             enabled: rootPane.desktopClockEnabled
+             expandedZ: 99
+ 
+             menuItems: [
+                 MenuItem {
+-                    text: qsTr("Left")
++                    text: qsTr("左侧")
+                     icon: "align_horizontal_left"
+                     property string val: "left"
+                 },
+                 MenuItem {
+-                    text: qsTr("Center")
++                    text: qsTr("居中")
+                     icon: "align_horizontal_center"
+                     property string val: "center"
+                 },
+                 MenuItem {
+-                    text: qsTr("Right")
++                    text: qsTr("右侧")
+                     icon: "align_horizontal_right"
+                     property string val: "right"
+                 }
+@@ -132,7 +132,7 @@
+     }
+ 
+     SwitchRow {
+-        label: qsTr("Invert colors")
++        label: qsTr("反相颜色")
+         checked: rootPane.desktopClockInvertColors
+         onToggled: checked => {
+             rootPane.desktopClockInvertColors = checked;
+@@ -144,13 +144,13 @@
+         contentSpacing: Appearance.spacing.small
+ 
+         StyledText {
+-            text: qsTr("Shadow")
++            text: qsTr("阴影")
+             font.pointSize: Appearance.font.size.larger
+             font.weight: 500
+         }
+ 
+         SwitchRow {
+-            label: qsTr("Enabled")
++            label: qsTr("已启用")
+             checked: rootPane.desktopClockShadowEnabled
+             onToggled: checked => {
+                 rootPane.desktopClockShadowEnabled = checked;
+@@ -164,7 +164,7 @@
+             SliderInput {
+                 Layout.fillWidth: true
+ 
+-                label: qsTr("Opacity")
++                label: qsTr("不透明度")
+                 value: rootPane.desktopClockShadowOpacity * 100
+                 from: 0
+                 to: 100
+@@ -189,7 +189,7 @@
+             SliderInput {
+                 Layout.fillWidth: true
+ 
+-                label: qsTr("Blur")
++                label: qsTr("模糊")
+                 value: rootPane.desktopClockShadowBlur * 100
+                 from: 0
+                 to: 100
+@@ -213,13 +213,13 @@
+         contentSpacing: Appearance.spacing.small
+ 
+         StyledText {
+-            text: qsTr("Background")
++            text: qsTr("背景")
+             font.pointSize: Appearance.font.size.larger
+             font.weight: 500
+         }
+ 
+         SwitchRow {
+-            label: qsTr("Enabled")
++            label: qsTr("已启用")
+             checked: rootPane.desktopClockBackgroundEnabled
+             onToggled: checked => {
+                 rootPane.desktopClockBackgroundEnabled = checked;
+@@ -228,7 +228,7 @@
+         }
+ 
+         SwitchRow {
+-            label: qsTr("Blur enabled")
++            label: qsTr("启用模糊")
+             checked: rootPane.desktopClockBackgroundBlur
+             onToggled: checked => {
+                 rootPane.desktopClockBackgroundBlur = checked;
+@@ -242,7 +242,7 @@
+             SliderInput {
+                 Layout.fillWidth: true
+ 
+-                label: qsTr("Opacity")
++                label: qsTr("不透明度")
+                 value: rootPane.desktopClockBackgroundOpacity * 100
+                 from: 0
+                 to: 100
+@@ -264,13 +264,13 @@
+ 
+     StyledText {
+         Layout.topMargin: Appearance.spacing.normal
+-        text: qsTr("Visualiser")
++        text: qsTr("频谱可视化")
+         font.pointSize: Appearance.font.size.larger
+         font.weight: 500
+     }
+ 
+     SwitchRow {
+-        label: qsTr("Visualiser enabled")
++        label: qsTr("启用频谱可视化")
+         checked: rootPane.visualiserEnabled
+         onToggled: checked => {
+             rootPane.visualiserEnabled = checked;
+@@ -279,7 +279,7 @@
+     }
+ 
+     SwitchRow {
+-        label: qsTr("Visualiser auto hide")
++        label: qsTr("频谱自动隐藏")
+         checked: rootPane.visualiserAutoHide
+         onToggled: checked => {
+             rootPane.visualiserAutoHide = checked;
+@@ -293,7 +293,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Visualiser rounding")
++            label: qsTr("频谱圆角")
+             value: rootPane.visualiserRounding
+             from: 0
+             to: 10
+@@ -318,7 +318,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Visualiser spacing")
++            label: qsTr("频谱间距")
+             value: rootPane.visualiserSpacing
+             from: 0
+             to: 2
+diff -ruN orig/modules/controlcenter/appearance/sections/BorderSection.qml new/modules/controlcenter/appearance/sections/BorderSection.qml
+--- orig/modules/controlcenter/appearance/sections/BorderSection.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/sections/BorderSection.qml	2026-02-17 23:31:07.642704054 +0800
+@@ -15,7 +15,7 @@
+ 
+     required property var rootPane
+ 
+-    title: qsTr("Border")
++    title: qsTr("边框")
+     showBackground: true
+ 
+     SectionContainer {
+@@ -24,7 +24,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Border rounding")
++            label: qsTr("边框圆角")
+             value: rootPane.borderRounding
+             from: 0.1
+             to: 100
+@@ -48,7 +48,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Border thickness")
++            label: qsTr("边框厚度")
+             value: rootPane.borderThickness
+             from: 0.1
+             to: 100
+diff -ruN orig/modules/controlcenter/appearance/sections/ColorSchemeSection.qml new/modules/controlcenter/appearance/sections/ColorSchemeSection.qml
+--- orig/modules/controlcenter/appearance/sections/ColorSchemeSection.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/sections/ColorSchemeSection.qml	2026-02-17 23:31:07.645280517 +0800
+@@ -12,8 +12,8 @@
+ import QtQuick.Layouts
+ 
+ CollapsibleSection {
+-    title: qsTr("Color scheme")
+-    description: qsTr("Available color schemes")
++    title: qsTr("配色方案")
++    description: qsTr("可用配色方案")
+     showBackground: true
+ 
+     ColumnLayout {
+diff -ruN orig/modules/controlcenter/appearance/sections/ColorVariantSection.qml new/modules/controlcenter/appearance/sections/ColorVariantSection.qml
+--- orig/modules/controlcenter/appearance/sections/ColorVariantSection.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/sections/ColorVariantSection.qml	2026-02-17 23:31:07.647759927 +0800
+@@ -12,8 +12,8 @@
+ import QtQuick.Layouts
+ 
+ CollapsibleSection {
+-    title: qsTr("Color variant")
+-    description: qsTr("Material theme variant")
++    title: qsTr("颜色变体")
++    description: qsTr("Material 主题变体")
+     showBackground: true
+ 
+     ColumnLayout {
+diff -ruN orig/modules/controlcenter/appearance/sections/FontsSection.qml new/modules/controlcenter/appearance/sections/FontsSection.qml
+--- orig/modules/controlcenter/appearance/sections/FontsSection.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/sections/FontsSection.qml	2026-02-17 23:31:07.650579718 +0800
+@@ -15,12 +15,12 @@
+ 
+     required property var rootPane
+ 
+-    title: qsTr("Fonts")
++    title: qsTr("字体")
+     showBackground: true
+ 
+     CollapsibleSection {
+         id: materialFontSection
+-        title: qsTr("Material font family")
++        title: qsTr("Material 字体族")
+         expanded: true
+         showBackground: true
+         nested: true
+@@ -100,7 +100,7 @@
+ 
+     CollapsibleSection {
+         id: monoFontSection
+-        title: qsTr("Monospace font family")
++        title: qsTr("等宽字体族")
+         expanded: false
+         showBackground: true
+         nested: true
+@@ -179,7 +179,7 @@
+ 
+     CollapsibleSection {
+         id: sansFontSection
+-        title: qsTr("Sans-serif font family")
++        title: qsTr("无衬线字体族")
+         expanded: false
+         showBackground: true
+         nested: true
+@@ -262,7 +262,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Font size scale")
++            label: qsTr("字号缩放")
+             value: rootPane.fontSizeScale
+             from: 0.7
+             to: 1.5
+diff -ruN orig/modules/controlcenter/appearance/sections/ScalesSection.qml new/modules/controlcenter/appearance/sections/ScalesSection.qml
+--- orig/modules/controlcenter/appearance/sections/ScalesSection.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/sections/ScalesSection.qml	2026-02-17 23:31:07.653092594 +0800
+@@ -15,7 +15,7 @@
+ 
+     required property var rootPane
+ 
+-    title: qsTr("Scales")
++    title: qsTr("缩放")
+     showBackground: true
+ 
+     SectionContainer {
+@@ -24,7 +24,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Padding scale")
++            label: qsTr("内边距缩放")
+             value: rootPane.paddingScale
+             from: 0.5
+             to: 2.0
+@@ -48,7 +48,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Rounding scale")
++            label: qsTr("圆角缩放")
+             value: rootPane.roundingScale
+             from: 0.1
+             to: 5.0
+@@ -72,7 +72,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Spacing scale")
++            label: qsTr("间距缩放")
+             value: rootPane.spacingScale
+             from: 0.1
+             to: 2.0
+diff -ruN orig/modules/controlcenter/appearance/sections/ThemeModeSection.qml new/modules/controlcenter/appearance/sections/ThemeModeSection.qml
+--- orig/modules/controlcenter/appearance/sections/ThemeModeSection.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/sections/ThemeModeSection.qml	2026-02-17 23:31:07.655732638 +0800
+@@ -9,12 +9,12 @@
+ import QtQuick
+ 
+ CollapsibleSection {
+-    title: qsTr("Theme mode")
+-    description: qsTr("Light or dark theme")
++    title: qsTr("主题模式")
++    description: qsTr("浅色或深色主题")
+     showBackground: true
+ 
+     SwitchRow {
+-        label: qsTr("Dark mode")
++        label: qsTr("深色模式")
+         checked: !Colours.currentLight
+         onToggled: checked => {
+             Colours.setMode(checked ? "dark" : "light");
+diff -ruN orig/modules/controlcenter/appearance/sections/TransparencySection.qml new/modules/controlcenter/appearance/sections/TransparencySection.qml
+--- orig/modules/controlcenter/appearance/sections/TransparencySection.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/appearance/sections/TransparencySection.qml	2026-02-17 23:31:07.658022646 +0800
+@@ -15,11 +15,11 @@
+ 
+     required property var rootPane
+ 
+-    title: qsTr("Transparency")
++    title: qsTr("透明度")
+     showBackground: true
+ 
+     SwitchRow {
+-        label: qsTr("Transparency enabled")
++        label: qsTr("启用透明度")
+         checked: rootPane.transparencyEnabled
+         onToggled: checked => {
+             rootPane.transparencyEnabled = checked;
+@@ -33,7 +33,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Transparency base")
++            label: qsTr("基础透明度")
+             value: rootPane.transparencyBase * 100
+             from: 0
+             to: 100
+@@ -58,7 +58,7 @@
+         SliderInput {
+             Layout.fillWidth: true
+ 
+-            label: qsTr("Transparency layers")
++            label: qsTr("透明层级")
+             value: rootPane.transparencyLayers * 100
+             from: 0
+             to: 100
+diff -ruN orig/modules/controlcenter/audio/AudioPane.qml new/modules/controlcenter/audio/AudioPane.qml
+--- orig/modules/controlcenter/audio/AudioPane.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/audio/AudioPane.qml	2026-02-17 23:31:07.659987602 +0800
+@@ -45,7 +45,7 @@
+                         spacing: Appearance.spacing.smaller
+ 
+                         StyledText {
+-                            text: qsTr("Audio")
++                            text: qsTr("音频")
+                             font.pointSize: Appearance.font.size.large
+                             font.weight: 500
+                         }
+@@ -59,7 +59,7 @@
+                         id: outputDevicesSection
+ 
+                         Layout.fillWidth: true
+-                        title: qsTr("Output devices")
++                        title: qsTr("输出设备")
+                         expanded: true
+ 
+                         ColumnLayout {
+@@ -71,7 +71,7 @@
+                                 spacing: Appearance.spacing.small
+ 
+                                 StyledText {
+-                                    text: qsTr("Devices (%1)").arg(Audio.sinks.length)
++                                    text: qsTr("设备（%1）").arg(Audio.sinks.length)
+                                     font.pointSize: Appearance.font.size.normal
+                                     font.weight: 500
+                                 }
+@@ -79,7 +79,7 @@
+ 
+                             StyledText {
+                                 Layout.fillWidth: true
+-                                text: qsTr("All available output devices")
++                                text: qsTr("所有可用输出设备")
+                                 color: Colours.palette.m3outline
+                             }
+ 
+@@ -122,7 +122,7 @@
+                                             elide: Text.ElideRight
+                                             maximumLineCount: 1
+ 
+-                                            text: modelData.description || qsTr("Unknown")
++                                            text: modelData.description || qsTr("未知")
+                                             font.weight: Audio.sink?.id === modelData.id ? 500 : 400
+                                         }
+                                     }
+@@ -137,7 +137,7 @@
+                         id: inputDevicesSection
+ 
+                         Layout.fillWidth: true
+-                        title: qsTr("Input devices")
++                        title: qsTr("输入设备")
+                         expanded: true
+ 
+                         ColumnLayout {
+@@ -149,7 +149,7 @@
+                                 spacing: Appearance.spacing.small
+ 
+                                 StyledText {
+-                                    text: qsTr("Devices (%1)").arg(Audio.sources.length)
++                                    text: qsTr("设备（%1）").arg(Audio.sources.length)
+                                     font.pointSize: Appearance.font.size.normal
+                                     font.weight: 500
+                                 }
+@@ -157,7 +157,7 @@
+ 
+                             StyledText {
+                                 Layout.fillWidth: true
+-                                text: qsTr("All available input devices")
++                                text: qsTr("所有可用输入设备")
+                                 color: Colours.palette.m3outline
+                             }
+ 
+@@ -200,7 +200,7 @@
+                                             elide: Text.ElideRight
+                                             maximumLineCount: 1
+ 
+-                                            text: modelData.description || qsTr("Unknown")
++                                            text: modelData.description || qsTr("未知")
+                                             font.weight: Audio.source?.id === modelData.id ? 500 : 400
+                                         }
+                                     }
+@@ -234,12 +234,12 @@
+ 
+                     SettingsHeader {
+                         icon: "volume_up"
+-                        title: qsTr("Audio Settings")
++                        title: qsTr("音频设置")
+                     }
+ 
+                     SectionHeader {
+-                        title: qsTr("Output volume")
+-                        description: qsTr("Control the volume of your output device")
++                        title: qsTr("输出音量")
++                        description: qsTr("调整输出设备音量")
+                     }
+ 
+                     SectionContainer {
+@@ -254,7 +254,7 @@
+                                 spacing: Appearance.spacing.normal
+ 
+                                 StyledText {
+-                                    text: qsTr("Volume")
++                                    text: qsTr("音量")
+                                     font.pointSize: Appearance.font.size.normal
+                                     font.weight: 500
+                                 }
+@@ -353,8 +353,8 @@
+                     }
+ 
+                     SectionHeader {
+-                        title: qsTr("Input volume")
+-                        description: qsTr("Control the volume of your input device")
++                        title: qsTr("输入音量")
++                        description: qsTr("调整输入设备音量")
+                     }
+ 
+                     SectionContainer {
+@@ -369,7 +369,7 @@
+                                 spacing: Appearance.spacing.normal
+ 
+                                 StyledText {
+-                                    text: qsTr("Volume")
++                                    text: qsTr("音量")
+                                     font.pointSize: Appearance.font.size.normal
+                                     font.weight: 500
+                                 }
+@@ -468,8 +468,8 @@
+                     }
+ 
+                     SectionHeader {
+-                        title: qsTr("Applications")
+-                        description: qsTr("Control volume for individual applications")
++                        title: qsTr("应用")
++                        description: qsTr("单独调整各应用音量")
+                     }
+ 
+                     SectionContainer {
+@@ -607,7 +607,7 @@
+                             StyledText {
+                                 Layout.fillWidth: true
+                                 visible: Audio.streams.length === 0
+-                                text: qsTr("No applications currently playing audio")
++                                text: qsTr("当前没有正在播放音频的应用")
+                                 color: Colours.palette.m3outline
+                                 font.pointSize: Appearance.font.size.small
+                                 horizontalAlignment: Text.AlignHCenter
+diff -ruN orig/modules/controlcenter/bluetooth/Details.qml new/modules/controlcenter/bluetooth/Details.qml
+--- orig/modules/controlcenter/bluetooth/Details.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/bluetooth/Details.qml	2026-02-17 23:31:07.664333596 +0800
+@@ -58,13 +58,13 @@
+ 
+                         StyledText {
+                             Layout.topMargin: Appearance.spacing.large
+-                            text: qsTr("Connection status")
++                            text: qsTr("连接状态")
+                             font.pointSize: Appearance.font.size.larger
+                             font.weight: 500
+                         }
+ 
+                         StyledText {
+-                            text: qsTr("Connection settings for this device")
++                            text: qsTr("此设备的连接设置")
+                             color: Colours.palette.m3outline
+                         }
+ 
+@@ -86,13 +86,13 @@
+                                 spacing: Appearance.spacing.larger
+ 
+                                 Toggle {
+-                                    label: qsTr("Connected")
++                                    label: qsTr("已连接")
+                                     checked: root.device?.connected ?? false
+                                     toggle.onToggled: root.device.connected = checked
+                                 }
+ 
+                                 Toggle {
+-                                    label: qsTr("Paired")
++                                    label: qsTr("已配对")
+                                     checked: root.device?.paired ?? false
+                                     toggle.onToggled: {
+                                         if (root.device.paired)
+@@ -103,7 +103,7 @@
+                                 }
+ 
+                                 Toggle {
+-                                    label: qsTr("Blocked")
++                                    label: qsTr("已阻止")
+                                     checked: root.device?.blocked ?? false
+                                     toggle.onToggled: root.device.blocked = checked
+                                 }
+@@ -117,13 +117,13 @@
+ 
+                         StyledText {
+                             Layout.topMargin: Appearance.spacing.large
+-                            text: qsTr("Device properties")
++                            text: qsTr("设备属性")
+                             font.pointSize: Appearance.font.size.larger
+                             font.weight: 500
+                         }
+ 
+                         StyledText {
+-                            text: qsTr("Additional settings")
++                            text: qsTr("其他设置")
+                             color: Colours.palette.m3outline
+                         }
+ 
+@@ -187,7 +187,7 @@
+ 
+                                             anchors.left: parent.left
+ 
+-                                            text: qsTr("Device name")
++                                            text: qsTr("设备名称")
+                                             color: Colours.palette.m3outline
+                                             font.pointSize: Appearance.font.size.small
+                                         }
+@@ -306,13 +306,13 @@
+                                 }
+ 
+                                 Toggle {
+-                                    label: qsTr("Trusted")
++                                    label: qsTr("受信任")
+                                     checked: root.device?.trusted ?? false
+                                     toggle.onToggled: root.device.trusted = checked
+                                 }
+ 
+                                 Toggle {
+-                                    label: qsTr("Wake allowed")
++                                    label: qsTr("允许唤醒")
+                                     checked: root.device?.wakeAllowed ?? false
+                                     toggle.onToggled: root.device.wakeAllowed = checked
+                                 }
+@@ -326,13 +326,13 @@
+ 
+                         StyledText {
+                             Layout.topMargin: Appearance.spacing.large
+-                            text: qsTr("Device information")
++                            text: qsTr("设备信息")
+                             font.pointSize: Appearance.font.size.larger
+                             font.weight: 500
+                         }
+ 
+                         StyledText {
+-                            text: qsTr("Information about this device")
++                            text: qsTr("此设备的信息")
+                             color: Colours.palette.m3outline
+                         }
+ 
+@@ -354,7 +354,7 @@
+                                 spacing: Appearance.spacing.small / 2
+ 
+                                 StyledText {
+-                                    text: root.device?.batteryAvailable ? qsTr("Device battery (%1%)").arg(root.device.battery * 100) : qsTr("Battery unavailable")
++                                    text: root.device?.batteryAvailable ? qsTr("设备电量（%1%）").arg(root.device.battery * 100) : qsTr("电池不可用")
+                                 }
+ 
+                                 RowLayout {
+@@ -391,7 +391,7 @@
+ 
+                                 StyledText {
+                                     Layout.topMargin: Appearance.spacing.normal
+-                                    text: qsTr("Dbus path")
++                                    text: qsTr("D-Bus 路径")
+                                 }
+ 
+                                 StyledText {
+@@ -402,7 +402,7 @@
+ 
+                                 StyledText {
+                                     Layout.topMargin: Appearance.spacing.normal
+-                                    text: qsTr("MAC address")
++                                    text: qsTr("MAC 地址")
+                                 }
+ 
+                                 StyledText {
+@@ -413,18 +413,18 @@
+ 
+                                 StyledText {
+                                     Layout.topMargin: Appearance.spacing.normal
+-                                    text: qsTr("Bonded")
++                                    text: qsTr("已绑定")
+                                 }
+ 
+                                 StyledText {
+-                                    text: root.device?.bonded ? qsTr("Yes") : qsTr("No")
++                                    text: root.device?.bonded ? qsTr("是") : qsTr("否")
+                                     color: Colours.palette.m3outline
+                                     font.pointSize: Appearance.font.size.small
+                                 }
+ 
+                                 StyledText {
+                                     Layout.topMargin: Appearance.spacing.normal
+-                                    text: qsTr("System name")
++                                    text: qsTr("系统名称")
+                                 }
+ 
+                                 StyledText {
+diff -ruN orig/modules/controlcenter/bluetooth/DeviceList.qml new/modules/controlcenter/bluetooth/DeviceList.qml
+--- orig/modules/controlcenter/bluetooth/DeviceList.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/bluetooth/DeviceList.qml	2026-02-17 23:31:07.666820083 +0800
+@@ -20,8 +20,8 @@
+     readonly property bool smallDiscoverable: width <= 540
+     readonly property bool smallPairable: width <= 480
+ 
+-    title: qsTr("Devices (%1)").arg(Bluetooth.devices.values.length)
+-    description: qsTr("All available bluetooth devices")
++    title: qsTr("设备（%1）").arg(Bluetooth.devices.values.length)
++    description: qsTr("所有可用蓝牙设备")
+     activeItem: session.bt.active
+ 
+     model: ScriptModel {
+@@ -35,7 +35,7 @@
+             spacing: Appearance.spacing.smaller
+ 
+             StyledText {
+-                text: qsTr("Bluetooth")
++                text: qsTr("蓝牙")
+                 font.pointSize: Appearance.font.size.large
+                 font.weight: 500
+             }
+@@ -51,7 +51,7 @@
+                 iconSize: Appearance.font.size.normal
+                 horizontalPadding: Appearance.padding.normal
+                 verticalPadding: Appearance.padding.smaller
+-                tooltip: qsTr("Toggle Bluetooth")
++                tooltip: qsTr("切换蓝牙")
+ 
+                 onClicked: {
+                     const adapter = Bluetooth.defaultAdapter;
+@@ -63,11 +63,11 @@
+             ToggleButton {
+                 toggled: Bluetooth.defaultAdapter?.discoverable ?? false
+                 icon: root.smallDiscoverable ? "group_search" : ""
+-                label: root.smallDiscoverable ? "" : qsTr("Discoverable")
++                label: root.smallDiscoverable ? "" : qsTr("可发现")
+                 iconSize: Appearance.font.size.normal
+                 horizontalPadding: Appearance.padding.normal
+                 verticalPadding: Appearance.padding.smaller
+-                tooltip: qsTr("Make discoverable")
++                tooltip: qsTr("设为可发现")
+ 
+                 onClicked: {
+                     const adapter = Bluetooth.defaultAdapter;
+@@ -79,11 +79,11 @@
+             ToggleButton {
+                 toggled: Bluetooth.defaultAdapter?.pairable ?? false
+                 icon: "missing_controller"
+-                label: root.smallPairable ? "" : qsTr("Pairable")
++                label: root.smallPairable ? "" : qsTr("可配对")
+                 iconSize: Appearance.font.size.normal
+                 horizontalPadding: Appearance.padding.normal
+                 verticalPadding: Appearance.padding.smaller
+-                tooltip: qsTr("Make pairable")
++                tooltip: qsTr("设为可配对")
+ 
+                 onClicked: {
+                     const adapter = Bluetooth.defaultAdapter;
+@@ -99,7 +99,7 @@
+                 iconSize: Appearance.font.size.normal
+                 horizontalPadding: Appearance.padding.normal
+                 verticalPadding: Appearance.padding.smaller
+-                tooltip: qsTr("Scan for devices")
++                tooltip: qsTr("扫描设备")
+ 
+                 onClicked: {
+                     const adapter = Bluetooth.defaultAdapter;
+@@ -115,7 +115,7 @@
+                 iconSize: Appearance.font.size.normal
+                 horizontalPadding: Appearance.padding.normal
+                 verticalPadding: Appearance.padding.smaller
+-                tooltip: qsTr("Bluetooth settings")
++                tooltip: qsTr("蓝牙设置")
+ 
+                 onClicked: {
+                     if (root.session.bt.active)
+@@ -194,13 +194,13 @@
+ 
+                     StyledText {
+                         Layout.fillWidth: true
+-                        text: device.modelData ? device.modelData.name : qsTr("Unknown")
++                        text: device.modelData ? device.modelData.name : qsTr("未知")
+                         elide: Text.ElideRight
+                     }
+ 
+                     StyledText {
+                         Layout.fillWidth: true
+-                        text: (device.modelData ? device.modelData.address : "") + (device.connected ? qsTr(" (Connected)") : (device.modelData && device.modelData.bonded) ? qsTr(" (Paired)") : "")
++                        text: (device.modelData ? device.modelData.address : "") + (device.connected ? qsTr("（已连接）") : (device.modelData && device.modelData.bonded) ? qsTr("（已配对）") : "")
+                         color: Colours.palette.m3outline
+                         font.pointSize: Appearance.font.size.small
+                         elide: Text.ElideRight
+diff -ruN orig/modules/controlcenter/bluetooth/Settings.qml new/modules/controlcenter/bluetooth/Settings.qml
+--- orig/modules/controlcenter/bluetooth/Settings.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/bluetooth/Settings.qml	2026-02-17 23:31:07.669703003 +0800
+@@ -20,18 +20,18 @@
+ 
+     SettingsHeader {
+         icon: "bluetooth"
+-        title: qsTr("Bluetooth Settings")
++        title: qsTr("蓝牙设置")
+     }
+ 
+     StyledText {
+         Layout.topMargin: Appearance.spacing.large
+-        text: qsTr("Adapter status")
++        text: qsTr("适配器状态")
+         font.pointSize: Appearance.font.size.larger
+         font.weight: 500
+     }
+ 
+     StyledText {
+-        text: qsTr("General adapter settings")
++        text: qsTr("适配器常规设置")
+         color: Colours.palette.m3outline
+     }
+ 
+@@ -53,7 +53,7 @@
+             spacing: Appearance.spacing.larger
+ 
+             Toggle {
+-                label: qsTr("Powered")
++                label: qsTr("已开启")
+                 checked: Bluetooth.defaultAdapter?.enabled ?? false
+                 toggle.onToggled: {
+                     const adapter = Bluetooth.defaultAdapter;
+@@ -63,7 +63,7 @@
+             }
+ 
+             Toggle {
+-                label: qsTr("Discoverable")
++                label: qsTr("可发现")
+                 checked: Bluetooth.defaultAdapter?.discoverable ?? false
+                 toggle.onToggled: {
+                     const adapter = Bluetooth.defaultAdapter;
+@@ -73,7 +73,7 @@
+             }
+ 
+             Toggle {
+-                label: qsTr("Pairable")
++                label: qsTr("可配对")
+                 checked: Bluetooth.defaultAdapter?.pairable ?? false
+                 toggle.onToggled: {
+                     const adapter = Bluetooth.defaultAdapter;
+@@ -86,13 +86,13 @@
+ 
+     StyledText {
+         Layout.topMargin: Appearance.spacing.large
+-        text: qsTr("Adapter properties")
++        text: qsTr("适配器属性")
+         font.pointSize: Appearance.font.size.larger
+         font.weight: 500
+     }
+ 
+     StyledText {
+-        text: qsTr("Per-adapter settings")
++        text: qsTr("每个适配器设置")
+         color: Colours.palette.m3outline
+     }
+ 
+@@ -119,7 +119,7 @@
+ 
+                 StyledText {
+                     Layout.fillWidth: true
+-                    text: qsTr("Current adapter")
++                    text: qsTr("当前适配器")
+                 }
+ 
+                 Item {
+@@ -149,7 +149,7 @@
+ 
+                         StyledText {
+                             Layout.leftMargin: Appearance.padding.small
+-                            text: Bluetooth.defaultAdapter?.name ?? qsTr("None")
++                            text: Bluetooth.defaultAdapter?.name ?? qsTr("无")
+                         }
+ 
+                         MaterialIcon {
+@@ -271,7 +271,7 @@
+ 
+                 StyledText {
+                     Layout.fillWidth: true
+-                    text: qsTr("Discoverable timeout")
++                    text: qsTr("可发现超时")
+                 }
+ 
+                 CustomSpinBox {
+@@ -328,7 +328,7 @@
+ 
+                         anchors.left: parent.left
+ 
+-                        text: qsTr("Rename adapter (currently does not work)")
++                        text: qsTr("重命名适配器（当前不可用）")
+                         color: Colours.palette.m3outline
+                         font.pointSize: Appearance.font.size.small
+                     }
+@@ -449,13 +449,13 @@
+ 
+     StyledText {
+         Layout.topMargin: Appearance.spacing.large
+-        text: qsTr("Adapter information")
++        text: qsTr("适配器信息")
+         font.pointSize: Appearance.font.size.larger
+         font.weight: 500
+     }
+ 
+     StyledText {
+-        text: qsTr("Information about the default adapter")
++        text: qsTr("默认适配器信息")
+         color: Colours.palette.m3outline
+     }
+ 
+@@ -477,18 +477,18 @@
+             spacing: Appearance.spacing.small / 2
+ 
+             StyledText {
+-                text: qsTr("Adapter state")
++                text: qsTr("适配器状态")
+             }
+ 
+             StyledText {
+-                text: Bluetooth.defaultAdapter ? BluetoothAdapterState.toString(Bluetooth.defaultAdapter.state) : qsTr("Unknown")
++                text: Bluetooth.defaultAdapter ? BluetoothAdapterState.toString(Bluetooth.defaultAdapter.state) : qsTr("未知")
+                 color: Colours.palette.m3outline
+                 font.pointSize: Appearance.font.size.small
+             }
+ 
+             StyledText {
+                 Layout.topMargin: Appearance.spacing.normal
+-                text: qsTr("Dbus path")
++                text: qsTr("D-Bus 路径")
+             }
+ 
+             StyledText {
+@@ -499,7 +499,7 @@
+ 
+             StyledText {
+                 Layout.topMargin: Appearance.spacing.normal
+-                text: qsTr("Adapter id")
++                text: qsTr("适配器 ID")
+             }
+ 
+             StyledText {
+diff -ruN orig/modules/controlcenter/launcher/LauncherPane.qml new/modules/controlcenter/launcher/LauncherPane.qml
+--- orig/modules/controlcenter/launcher/LauncherPane.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/launcher/LauncherPane.qml	2026-02-17 23:31:07.672961935 +0800
+@@ -156,7 +156,7 @@
+                     spacing: Appearance.spacing.smaller
+ 
+                     StyledText {
+-                        text: qsTr("Launcher")
++                        text: qsTr("启动器")
+                         font.pointSize: Appearance.font.size.large
+                         font.weight: 500
+                     }
+@@ -172,7 +172,7 @@
+                         iconSize: Appearance.font.size.normal
+                         horizontalPadding: Appearance.padding.normal
+                         verticalPadding: Appearance.padding.smaller
+-                        tooltip: qsTr("Launcher settings")
++                        tooltip: qsTr("启动器设置")
+ 
+                         onClicked: {
+                             if (root.session.launcher.active) {
+@@ -188,13 +188,13 @@
+ 
+                 StyledText {
+                     Layout.topMargin: Appearance.spacing.large
+-                    text: qsTr("Applications (%1)").arg(root.searchText ? root.filteredApps.length : allAppsDb.apps.length)
++                    text: qsTr("应用（%1）").arg(root.searchText ? root.filteredApps.length : allAppsDb.apps.length)
+                     font.pointSize: Appearance.font.size.normal
+                     font.weight: 500
+                 }
+ 
+                 StyledText {
+-                    text: qsTr("All applications available in the launcher")
++                    text: qsTr("启动器中的所有可用应用")
+                     color: Colours.palette.m3outline
+                 }
+ 
+@@ -230,7 +230,7 @@
+                         topPadding: Appearance.padding.normal
+                         bottomPadding: Appearance.padding.normal
+ 
+-                        placeholderText: qsTr("Search applications...")
++                        placeholderText: qsTr("搜索应用...")
+ 
+                         onTextChanged: {
+                             root.searchText = text;
+@@ -350,7 +350,7 @@
+ 
+                                 StyledText {
+                                     Layout.fillWidth: true
+-                                    text: modelData.name || modelData.entry?.name || qsTr("Unknown")
++                                    text: modelData.name || modelData.entry?.name || qsTr("未知")
+                                     font.pointSize: Appearance.font.size.normal
+                                 }
+                             }
+@@ -493,7 +493,7 @@
+                 Layout.topMargin: Appearance.padding.large * 2
+                 visible: displayedApp === null
+                 icon: "apps"
+-                title: qsTr("Launcher Applications")
++                title: qsTr("启动器应用")
+             }
+ 
+             Item {
+@@ -528,7 +528,7 @@
+                     StyledText {
+                         id: appTitleText
+                         Layout.alignment: Qt.AlignHCenter
+-                        text: displayedApp ? (displayedApp.name || displayedApp.entry?.name || qsTr("Application Details")) : ""
++                        text: displayedApp ? (displayedApp.name || displayedApp.entry?.name || qsTr("应用详情")) : ""
+                         font.pointSize: Appearance.font.size.large
+                         font.bold: true
+                     }
+@@ -562,7 +562,7 @@
+                         SwitchRow {
+                             Layout.topMargin: Appearance.spacing.normal
+                             visible: appDetailsLayout.displayedApp !== null
+-                            label: qsTr("Hide from launcher")
++                            label: qsTr("从启动器隐藏")
+                             checked: root.hideFromLauncherChecked
+                             enabled: appDetailsLayout.displayedApp !== null
+                             onToggled: checked => {
+diff -ruN orig/modules/controlcenter/launcher/Settings.qml new/modules/controlcenter/launcher/Settings.qml
+--- orig/modules/controlcenter/launcher/Settings.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/launcher/Settings.qml	2026-02-17 23:31:07.675653997 +0800
+@@ -19,18 +19,18 @@
+ 
+     SettingsHeader {
+         icon: "apps"
+-        title: qsTr("Launcher Settings")
++        title: qsTr("启动器设置")
+     }
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("General")
+-        description: qsTr("General launcher settings")
++        title: qsTr("常规")
++        description: qsTr("启动器常规设置")
+     }
+ 
+     SectionContainer {
+         ToggleRow {
+-            label: qsTr("Enabled")
++            label: qsTr("已启用")
+             checked: Config.launcher.enabled
+             toggle.onToggled: {
+                 Config.launcher.enabled = checked;
+@@ -39,7 +39,7 @@
+         }
+ 
+         ToggleRow {
+-            label: qsTr("Show on hover")
++            label: qsTr("悬停显示")
+             checked: Config.launcher.showOnHover
+             toggle.onToggled: {
+                 Config.launcher.showOnHover = checked;
+@@ -48,7 +48,7 @@
+         }
+ 
+         ToggleRow {
+-            label: qsTr("Vim keybinds")
++            label: qsTr("Vim 键位")
+             checked: Config.launcher.vimKeybinds
+             toggle.onToggled: {
+                 Config.launcher.vimKeybinds = checked;
+@@ -57,7 +57,7 @@
+         }
+ 
+         ToggleRow {
+-            label: qsTr("Enable dangerous actions")
++            label: qsTr("启用危险操作")
+             checked: Config.launcher.enableDangerousActions
+             toggle.onToggled: {
+                 Config.launcher.enableDangerousActions = checked;
+@@ -68,61 +68,61 @@
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Display")
+-        description: qsTr("Display and appearance settings")
++        title: qsTr("显示")
++        description: qsTr("显示与外观设置")
+     }
+ 
+     SectionContainer {
+         contentSpacing: Appearance.spacing.small / 2
+ 
+         PropertyRow {
+-            label: qsTr("Max shown items")
++            label: qsTr("最大显示项数")
+             value: qsTr("%1").arg(Config.launcher.maxShown)
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Max wallpapers")
++            label: qsTr("最大壁纸数")
+             value: qsTr("%1").arg(Config.launcher.maxWallpapers)
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Drag threshold")
++            label: qsTr("拖拽阈值")
+             value: qsTr("%1 px").arg(Config.launcher.dragThreshold)
+         }
+     }
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Prefixes")
+-        description: qsTr("Command prefix settings")
++        title: qsTr("前缀")
++        description: qsTr("命令前缀设置")
+     }
+ 
+     SectionContainer {
+         contentSpacing: Appearance.spacing.small / 2
+ 
+         PropertyRow {
+-            label: qsTr("Special prefix")
+-            value: Config.launcher.specialPrefix || qsTr("None")
++            label: qsTr("特殊前缀")
++            value: Config.launcher.specialPrefix || qsTr("无")
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Action prefix")
+-            value: Config.launcher.actionPrefix || qsTr("None")
++            label: qsTr("动作前缀")
++            value: Config.launcher.actionPrefix || qsTr("无")
+         }
+     }
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Fuzzy search")
+-        description: qsTr("Fuzzy search settings")
++        title: qsTr("模糊搜索")
++        description: qsTr("模糊搜索设置")
+     }
+ 
+     SectionContainer {
+         ToggleRow {
+-            label: qsTr("Apps")
++            label: qsTr("应用")
+             checked: Config.launcher.useFuzzy.apps
+             toggle.onToggled: {
+                 Config.launcher.useFuzzy.apps = checked;
+@@ -131,7 +131,7 @@
+         }
+ 
+         ToggleRow {
+-            label: qsTr("Actions")
++            label: qsTr("动作")
+             checked: Config.launcher.useFuzzy.actions
+             toggle.onToggled: {
+                 Config.launcher.useFuzzy.actions = checked;
+@@ -140,7 +140,7 @@
+         }
+ 
+         ToggleRow {
+-            label: qsTr("Schemes")
++            label: qsTr("方案")
+             checked: Config.launcher.useFuzzy.schemes
+             toggle.onToggled: {
+                 Config.launcher.useFuzzy.schemes = checked;
+@@ -149,7 +149,7 @@
+         }
+ 
+         ToggleRow {
+-            label: qsTr("Variants")
++            label: qsTr("变体")
+             checked: Config.launcher.useFuzzy.variants
+             toggle.onToggled: {
+                 Config.launcher.useFuzzy.variants = checked;
+@@ -158,7 +158,7 @@
+         }
+ 
+         ToggleRow {
+-            label: qsTr("Wallpapers")
++            label: qsTr("壁纸")
+             checked: Config.launcher.useFuzzy.wallpapers
+             toggle.onToggled: {
+                 Config.launcher.useFuzzy.wallpapers = checked;
+@@ -169,48 +169,48 @@
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Sizes")
+-        description: qsTr("Size settings for launcher items")
++        title: qsTr("尺寸")
++        description: qsTr("启动器项目尺寸设置")
+     }
+ 
+     SectionContainer {
+         contentSpacing: Appearance.spacing.small / 2
+ 
+         PropertyRow {
+-            label: qsTr("Item width")
++            label: qsTr("项目宽度")
+             value: qsTr("%1 px").arg(Config.launcher.sizes.itemWidth)
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Item height")
++            label: qsTr("项目高度")
+             value: qsTr("%1 px").arg(Config.launcher.sizes.itemHeight)
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Wallpaper width")
++            label: qsTr("壁纸宽度")
+             value: qsTr("%1 px").arg(Config.launcher.sizes.wallpaperWidth)
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Wallpaper height")
++            label: qsTr("壁纸高度")
+             value: qsTr("%1 px").arg(Config.launcher.sizes.wallpaperHeight)
+         }
+     }
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Hidden apps")
+-        description: qsTr("Applications hidden from launcher")
++        title: qsTr("隐藏应用")
++        description: qsTr("启动器中已隐藏的应用")
+     }
+ 
+     SectionContainer {
+         contentSpacing: Appearance.spacing.small / 2
+ 
+         PropertyRow {
+-            label: qsTr("Total hidden")
++            label: qsTr("隐藏总数")
+             value: qsTr("%1").arg(Config.launcher.hiddenApps ? Config.launcher.hiddenApps.length : 0)
+         }
+     }
+diff -ruN orig/modules/controlcenter/network/EthernetDetails.qml new/modules/controlcenter/network/EthernetDetails.qml
+--- orig/modules/controlcenter/network/EthernetDetails.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/EthernetDetails.qml	2026-02-17 23:31:07.678468489 +0800
+@@ -36,7 +36,7 @@
+     headerComponent: Component {
+         ConnectionHeader {
+             icon: "cable"
+-            title: root.ethernetDevice?.interface ?? qsTr("Unknown")
++            title: root.ethernetDevice?.interface ?? qsTr("未知")
+         }
+     }
+ 
+@@ -46,13 +46,13 @@
+                 spacing: Appearance.spacing.normal
+ 
+                 SectionHeader {
+-                    title: qsTr("Connection status")
+-                    description: qsTr("Connection settings for this device")
++                    title: qsTr("连接状态")
++                    description: qsTr("此设备的连接设置")
+                 }
+ 
+                 SectionContainer {
+                     ToggleRow {
+-                        label: qsTr("Connected")
++                        label: qsTr("已连接")
+                         checked: root.ethernetDevice?.connected ?? false
+                         toggle.onToggled: {
+                             if (checked) {
+@@ -72,28 +72,28 @@
+                 spacing: Appearance.spacing.normal
+ 
+                 SectionHeader {
+-                    title: qsTr("Device properties")
+-                    description: qsTr("Additional information")
++                    title: qsTr("设备属性")
++                    description: qsTr("附加信息")
+                 }
+ 
+                 SectionContainer {
+                     contentSpacing: Appearance.spacing.small / 2
+ 
+                     PropertyRow {
+-                        label: qsTr("Interface")
+-                        value: root.ethernetDevice?.interface ?? qsTr("Unknown")
++                        label: qsTr("接口")
++                        value: root.ethernetDevice?.interface ?? qsTr("未知")
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+-                        label: qsTr("Connection")
+-                        value: root.ethernetDevice?.connection || qsTr("Not connected")
++                        label: qsTr("连接")
++                        value: root.ethernetDevice?.connection || qsTr("未连接")
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+-                        label: qsTr("State")
+-                        value: root.ethernetDevice?.state ?? qsTr("Unknown")
++                        label: qsTr("状态")
++                        value: root.ethernetDevice?.state ?? qsTr("未知")
+                     }
+                 }
+             }
+@@ -103,8 +103,8 @@
+                 spacing: Appearance.spacing.normal
+ 
+                 SectionHeader {
+-                    title: qsTr("Connection information")
+-                    description: qsTr("Network connection details")
++                    title: qsTr("连接信息")
++                    description: qsTr("网络连接详情")
+                 }
+ 
+                 SectionContainer {
+diff -ruN orig/modules/controlcenter/network/EthernetList.qml new/modules/controlcenter/network/EthernetList.qml
+--- orig/modules/controlcenter/network/EthernetList.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/EthernetList.qml	2026-02-17 23:31:07.681437503 +0800
+@@ -15,8 +15,8 @@
+ 
+     required property Session session
+ 
+-    title: qsTr("Devices (%1)").arg(Nmcli.ethernetDevices.length)
+-    description: qsTr("All available ethernet devices")
++    title: qsTr("设备（%1）").arg(Nmcli.ethernetDevices.length)
++    description: qsTr("所有可用以太网设备")
+     activeItem: session.ethernet.active
+ 
+     model: Nmcli.ethernetDevices
+@@ -26,7 +26,7 @@
+             spacing: Appearance.spacing.smaller
+ 
+             StyledText {
+-                text: qsTr("Settings")
++                text: qsTr("设置")
+                 font.pointSize: Appearance.font.size.large
+                 font.weight: 500
+             }
+@@ -118,7 +118,7 @@
+ 
+                     StyledText {
+                         Layout.fillWidth: true
+-                        text: modelData.interface || qsTr("Unknown")
++                        text: modelData.interface || qsTr("未知")
+                         elide: Text.ElideRight
+                     }
+ 
+@@ -128,7 +128,7 @@
+ 
+                         StyledText {
+                             Layout.fillWidth: true
+-                            text: modelData.connected ? qsTr("Connected") : qsTr("Disconnected")
++                            text: modelData.connected ? qsTr("已连接") : qsTr("已断开")
+                             color: modelData.connected ? Colours.palette.m3primary : Colours.palette.m3outline
+                             font.pointSize: Appearance.font.size.small
+                             font.weight: modelData.connected ? 500 : 400
+diff -ruN orig/modules/controlcenter/network/EthernetSettings.qml new/modules/controlcenter/network/EthernetSettings.qml
+--- orig/modules/controlcenter/network/EthernetSettings.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/EthernetSettings.qml	2026-02-17 23:31:07.691516267 +0800
+@@ -19,18 +19,18 @@
+ 
+     SettingsHeader {
+         icon: "cable"
+-        title: qsTr("Ethernet settings")
++        title: qsTr("以太网设置")
+     }
+ 
+     StyledText {
+         Layout.topMargin: Appearance.spacing.large
+-        text: qsTr("Ethernet devices")
++        text: qsTr("以太网设备")
+         font.pointSize: Appearance.font.size.larger
+         font.weight: 500
+     }
+ 
+     StyledText {
+-        text: qsTr("Available ethernet devices")
++        text: qsTr("可用以太网设备")
+         color: Colours.palette.m3outline
+     }
+ 
+@@ -52,7 +52,7 @@
+             spacing: Appearance.spacing.small / 2
+ 
+             StyledText {
+-                text: qsTr("Total devices")
++                text: qsTr("设备总数")
+             }
+ 
+             StyledText {
+@@ -63,7 +63,7 @@
+ 
+             StyledText {
+                 Layout.topMargin: Appearance.spacing.normal
+-                text: qsTr("Connected devices")
++                text: qsTr("已连接设备")
+             }
+ 
+             StyledText {
+diff -ruN orig/modules/controlcenter/network/NetworkSettings.qml new/modules/controlcenter/network/NetworkSettings.qml
+--- orig/modules/controlcenter/network/NetworkSettings.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/NetworkSettings.qml	2026-02-17 23:31:07.695668893 +0800
+@@ -21,39 +21,39 @@
+ 
+     SettingsHeader {
+         icon: "router"
+-        title: qsTr("Network Settings")
++        title: qsTr("网络设置")
+     }
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Ethernet")
+-        description: qsTr("Ethernet device information")
++        title: qsTr("以太网")
++        description: qsTr("以太网设备信息")
+     }
+ 
+     SectionContainer {
+         contentSpacing: Appearance.spacing.small / 2
+ 
+         PropertyRow {
+-            label: qsTr("Total devices")
++            label: qsTr("设备总数")
+             value: qsTr("%1").arg(Nmcli.ethernetDevices.length)
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Connected devices")
++            label: qsTr("已连接设备")
+             value: qsTr("%1").arg(Nmcli.ethernetDevices.filter(d => d.connected).length)
+         }
+     }
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Wireless")
+-        description: qsTr("WiFi network settings")
++        title: qsTr("无线网络")
++        description: qsTr("Wi-Fi 网络设置")
+     }
+ 
+     SectionContainer {
+         ToggleRow {
+-            label: qsTr("WiFi enabled")
++            label: qsTr("启用 Wi-Fi")
+             checked: Nmcli.wifiEnabled
+             toggle.onToggled: {
+                 Nmcli.enableWifi(checked);
+@@ -64,7 +64,7 @@
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+         title: qsTr("VPN")
+-        description: qsTr("VPN provider settings")
++        description: qsTr("VPN 提供商设置")
+         visible: Config.utilities.vpn.enabled || Config.utilities.vpn.provider.length > 0
+     }
+ 
+@@ -72,7 +72,7 @@
+         visible: Config.utilities.vpn.enabled || Config.utilities.vpn.provider.length > 0
+ 
+         ToggleRow {
+-            label: qsTr("VPN enabled")
++            label: qsTr("启用 VPN")
+             checked: Config.utilities.vpn.enabled
+             toggle.onToggled: {
+                 Config.utilities.vpn.enabled = checked;
+@@ -82,7 +82,7 @@
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Providers")
++            label: qsTr("提供商")
+             value: qsTr("%1").arg(Config.utilities.vpn.provider.length)
+         }
+ 
+@@ -90,7 +90,7 @@
+             Layout.fillWidth: true
+             Layout.topMargin: Appearance.spacing.normal
+             Layout.minimumHeight: Appearance.font.size.normal + Appearance.padding.normal * 2
+-            text: qsTr("⚙ Manage VPN Providers")
++            text: qsTr("⚙ 管理 VPN 提供商")
+             inactiveColour: Colours.palette.m3secondaryContainer
+             inactiveOnColour: Colours.palette.m3onSecondaryContainer
+ 
+@@ -102,37 +102,37 @@
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Current connection")
+-        description: qsTr("Active network connection information")
++        title: qsTr("当前连接")
++        description: qsTr("当前网络连接信息")
+     }
+ 
+     SectionContainer {
+         contentSpacing: Appearance.spacing.small / 2
+ 
+         PropertyRow {
+-            label: qsTr("Network")
+-            value: Nmcli.active ? Nmcli.active.ssid : (Nmcli.activeEthernet ? Nmcli.activeEthernet.interface : qsTr("Not connected"))
++            label: qsTr("网络")
++            value: Nmcli.active ? Nmcli.active.ssid : (Nmcli.activeEthernet ? Nmcli.activeEthernet.interface : qsTr("未连接"))
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+             visible: Nmcli.active !== null
+-            label: qsTr("Signal strength")
+-            value: Nmcli.active ? qsTr("%1%").arg(Nmcli.active.strength) : qsTr("N/A")
++            label: qsTr("信号强度")
++            value: Nmcli.active ? qsTr("%1%").arg(Nmcli.active.strength) : qsTr("不适用")
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+             visible: Nmcli.active !== null
+-            label: qsTr("Security")
+-            value: Nmcli.active ? (Nmcli.active.isSecure ? qsTr("Secured") : qsTr("Open")) : qsTr("N/A")
++            label: qsTr("安全性")
++            value: Nmcli.active ? (Nmcli.active.isSecure ? qsTr("已加密") : qsTr("开放")) : qsTr("不适用")
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+             visible: Nmcli.active !== null
+-            label: qsTr("Frequency")
+-            value: Nmcli.active ? qsTr("%1 MHz").arg(Nmcli.active.frequency) : qsTr("N/A")
++            label: qsTr("频率")
++            value: Nmcli.active ? qsTr("%1 MHz").arg(Nmcli.active.frequency) : qsTr("不适用")
+         }
+     }
+ 
+diff -ruN orig/modules/controlcenter/network/NetworkingPane.qml new/modules/controlcenter/network/NetworkingPane.qml
+--- orig/modules/controlcenter/network/NetworkingPane.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/NetworkingPane.qml	2026-02-17 23:31:07.698959532 +0800
+@@ -50,7 +50,7 @@
+                         spacing: Appearance.spacing.smaller
+ 
+                         StyledText {
+-                            text: qsTr("Network")
++                            text: qsTr("网络")
+                             font.pointSize: Appearance.font.size.large
+                             font.weight: 500
+                         }
+@@ -66,7 +66,7 @@
+                             iconSize: Appearance.font.size.normal
+                             horizontalPadding: Appearance.padding.normal
+                             verticalPadding: Appearance.padding.smaller
+-                            tooltip: qsTr("Toggle WiFi")
++                            tooltip: qsTr("切换 Wi-Fi")
+ 
+                             onClicked: {
+                                 Nmcli.toggleWifi(null);
+@@ -80,7 +80,7 @@
+                             iconSize: Appearance.font.size.normal
+                             horizontalPadding: Appearance.padding.normal
+                             verticalPadding: Appearance.padding.smaller
+-                            tooltip: qsTr("Scan for networks")
++                            tooltip: qsTr("扫描网络")
+ 
+                             onClicked: {
+                                 Nmcli.rescanWifi();
+@@ -94,7 +94,7 @@
+                             iconSize: Appearance.font.size.normal
+                             horizontalPadding: Appearance.padding.normal
+                             verticalPadding: Appearance.padding.smaller
+-                            tooltip: qsTr("Network settings")
++                            tooltip: qsTr("网络设置")
+ 
+                             onClicked: {
+                                 if (root.session.ethernet.active || root.session.network.active) {
+@@ -133,7 +133,7 @@
+                         id: ethernetListSection
+ 
+                         Layout.fillWidth: true
+-                        title: qsTr("Ethernet")
++                        title: qsTr("以太网")
+                         expanded: true
+ 
+                         Loader {
+@@ -151,7 +151,7 @@
+                         id: wirelessListSection
+ 
+                         Layout.fillWidth: true
+-                        title: qsTr("Wireless")
++                        title: qsTr("无线网络")
+                         expanded: true
+ 
+                         Loader {
+diff -ruN orig/modules/controlcenter/network/VpnDetails.qml new/modules/controlcenter/network/VpnDetails.qml
+--- orig/modules/controlcenter/network/VpnDetails.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/VpnDetails.qml	2026-02-17 23:31:07.702179801 +0800
+@@ -30,7 +30,7 @@
+     headerComponent: Component {
+         ConnectionHeader {
+             icon: "vpn_key"
+-            title: root.vpnProvider?.displayName ?? qsTr("Unknown")
++            title: root.vpnProvider?.displayName ?? qsTr("未知")
+         }
+     }
+ 
+@@ -40,13 +40,13 @@
+                 spacing: Appearance.spacing.normal
+ 
+                 SectionHeader {
+-                    title: qsTr("Connection status")
+-                    description: qsTr("VPN connection settings")
++                    title: qsTr("连接状态")
++                    description: qsTr("VPN 连接设置")
+                 }
+ 
+                 SectionContainer {
+                     ToggleRow {
+-                        label: qsTr("Enable this provider")
++                        label: qsTr("启用此提供商")
+                         checked: root.providerEnabled
+                         toggle.onToggled: {
+                             if (!root.vpnProvider)
+@@ -95,7 +95,7 @@
+                             enabled: !VPN.connecting
+                             inactiveColour: Colours.palette.m3primaryContainer
+                             inactiveOnColour: Colours.palette.m3onPrimaryContainer
+-                            text: VPN.connected ? qsTr("Disconnect") : qsTr("Connect")
++                            text: VPN.connected ? qsTr("断开连接") : qsTr("连接")
+ 
+                             onClicked: {
+                                 VPN.toggle();
+@@ -104,7 +104,7 @@
+ 
+                         TextButton {
+                             Layout.fillWidth: true
+-                            text: qsTr("Edit Provider")
++                            text: qsTr("编辑提供商")
+                             inactiveColour: Colours.palette.m3secondaryContainer
+                             inactiveOnColour: Colours.palette.m3onSecondaryContainer
+ 
+@@ -119,7 +119,7 @@
+ 
+                         TextButton {
+                             Layout.fillWidth: true
+-                            text: qsTr("Delete Provider")
++                            text: qsTr("删除提供商")
+                             inactiveColour: Colours.palette.m3errorContainer
+                             inactiveOnColour: Colours.palette.m3onErrorContainer
+ 
+@@ -144,48 +144,48 @@
+                 spacing: Appearance.spacing.normal
+ 
+                 SectionHeader {
+-                    title: qsTr("Provider details")
+-                    description: qsTr("VPN provider information")
++                    title: qsTr("提供商详情")
++                    description: qsTr("VPN 提供商信息")
+                 }
+ 
+                 SectionContainer {
+                     contentSpacing: Appearance.spacing.small / 2
+ 
+                     PropertyRow {
+-                        label: qsTr("Provider")
+-                        value: root.vpnProvider?.name ?? qsTr("Unknown")
++                        label: qsTr("提供商")
++                        value: root.vpnProvider?.name ?? qsTr("未知")
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+-                        label: qsTr("Display name")
+-                        value: root.vpnProvider?.displayName ?? qsTr("Unknown")
++                        label: qsTr("显示名称")
++                        value: root.vpnProvider?.displayName ?? qsTr("未知")
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+-                        label: qsTr("Interface")
+-                        value: root.vpnProvider?.interface || qsTr("N/A")
++                        label: qsTr("接口")
++                        value: root.vpnProvider?.interface || qsTr("不适用")
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+-                        label: qsTr("Status")
++                        label: qsTr("状态")
+                         value: {
+                             if (!root.providerEnabled)
+-                                return qsTr("Disabled");
++                                return qsTr("已禁用");
+                             if (VPN.connecting)
+-                                return qsTr("Connecting...");
++                                return qsTr("连接中...");
+                             if (VPN.connected)
+-                                return qsTr("Connected");
+-                            return qsTr("Enabled (Not connected)");
++                                return qsTr("已连接");
++                            return qsTr("已启用（未连接）");
+                         }
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+-                        label: qsTr("Enabled")
+-                        value: root.providerEnabled ? qsTr("Yes") : qsTr("No")
++                        label: qsTr("已启用")
++                        value: root.providerEnabled ? qsTr("是") : qsTr("否")
+                     }
+                 }
+             }
+@@ -270,7 +270,7 @@
+             spacing: Appearance.spacing.normal
+ 
+             StyledText {
+-                text: qsTr("Edit VPN Provider")
++                text: qsTr("编辑 VPN 提供商")
+                 font.pointSize: Appearance.font.size.large
+                 font.weight: 500
+             }
+@@ -280,7 +280,7 @@
+                 spacing: Appearance.spacing.smaller / 2
+ 
+                 StyledText {
+-                    text: qsTr("Display Name")
++                    text: qsTr("显示名称")
+                     font.pointSize: Appearance.font.size.small
+                     color: Colours.palette.m3onSurfaceVariant
+                 }
+@@ -316,7 +316,7 @@
+                 spacing: Appearance.spacing.smaller / 2
+ 
+                 StyledText {
+-                    text: qsTr("Interface (e.g., wg0, torguard)")
++                    text: qsTr("接口（例如 wg0、torguard）")
+                     font.pointSize: Appearance.font.size.small
+                     color: Colours.palette.m3onSurfaceVariant
+                 }
+@@ -354,7 +354,7 @@
+ 
+                 TextButton {
+                     Layout.fillWidth: true
+-                    text: qsTr("Cancel")
++                    text: qsTr("取消")
+                     inactiveColour: Colours.tPalette.m3surfaceContainerHigh
+                     inactiveOnColour: Colours.palette.m3onSurface
+                     onClicked: editVpnDialog.closeWithAnimation()
+@@ -362,7 +362,7 @@
+ 
+                 TextButton {
+                     Layout.fillWidth: true
+-                    text: qsTr("Save")
++                    text: qsTr("保存")
+                     enabled: editVpnDialog.interfaceName.length > 0
+                     inactiveColour: Colours.palette.m3primaryContainer
+                     inactiveOnColour: Colours.palette.m3onPrimaryContainer
+diff -ruN orig/modules/controlcenter/network/VpnList.qml new/modules/controlcenter/network/VpnList.qml
+--- orig/modules/controlcenter/network/VpnList.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/VpnList.qml	2026-02-17 23:31:07.705096918 +0800
+@@ -54,7 +54,7 @@
+ 
+     TextButton {
+         Layout.fillWidth: true
+-        text: qsTr("+ Add VPN Provider")
++        text: qsTr("+ 添加 VPN 提供商")
+         inactiveColour: Colours.palette.m3primaryContainer
+         inactiveOnColour: Colours.palette.m3onPrimaryContainer
+ 
+@@ -147,7 +147,7 @@
+                             elide: Text.ElideRight
+                             maximumLineCount: 1
+ 
+-                            text: modelData.displayName || qsTr("Unknown")
++                            text: modelData.displayName || qsTr("未知")
+                         }
+ 
+                         RowLayout {
+@@ -158,12 +158,12 @@
+                                 Layout.fillWidth: true
+                                 text: {
+                                     if (modelData.enabled && VPN.connected)
+-                                        return qsTr("Connected");
++                                        return qsTr("已连接");
+                                     if (modelData.enabled && VPN.connecting)
+-                                        return qsTr("Connecting...");
++                                        return qsTr("连接中...");
+                                     if (modelData.enabled)
+-                                        return qsTr("Enabled");
+-                                    return qsTr("Disabled");
++                                        return qsTr("已启用");
++                                    return qsTr("已禁用");
+                                 }
+                                 color: modelData.enabled ? (VPN.connected ? Colours.palette.m3primary : Colours.palette.m3onSurface) : Colours.palette.m3outline
+                                 font.pointSize: Appearance.font.size.small
+@@ -441,14 +441,14 @@
+                 }
+ 
+                 StyledText {
+-                    text: qsTr("Add VPN Provider")
++                    text: qsTr("添加 VPN 提供商")
+                     font.pointSize: Appearance.font.size.large
+                     font.weight: 500
+                 }
+ 
+                 StyledText {
+                     Layout.fillWidth: true
+-                    text: qsTr("Choose a provider to add")
++                    text: qsTr("选择要添加的提供商")
+                     wrapMode: Text.WordWrap
+                     color: Colours.palette.m3outline
+                     font.pointSize: Appearance.font.size.small
+@@ -520,7 +520,7 @@
+ 
+                 TextButton {
+                     Layout.fillWidth: true
+-                    text: qsTr("WireGuard (Custom)")
++                    text: qsTr("WireGuard（自定义）")
+                     inactiveColour: Colours.tPalette.m3surfaceContainerHigh
+                     inactiveOnColour: Colours.palette.m3onSurface
+                     onClicked: {
+@@ -531,7 +531,7 @@
+                 TextButton {
+                     Layout.topMargin: Appearance.spacing.normal
+                     Layout.fillWidth: true
+-                    text: qsTr("Cancel")
++                    text: qsTr("取消")
+                     inactiveColour: Colours.palette.m3secondaryContainer
+                     inactiveOnColour: Colours.palette.m3onSecondaryContainer
+                     onClicked: vpnDialog.closeWithAnimation()
+@@ -554,7 +554,7 @@
+                 }
+ 
+                 StyledText {
+-                    text: vpnDialog.editIndex >= 0 ? qsTr("Edit VPN Provider") : qsTr("Add %1 VPN").arg(vpnDialog.displayName)
++                    text: vpnDialog.editIndex >= 0 ? qsTr("编辑 VPN 提供商") : qsTr("添加 %1 VPN").arg(vpnDialog.displayName)
+                     font.pointSize: Appearance.font.size.large
+                     font.weight: 500
+                 }
+@@ -564,7 +564,7 @@
+                     spacing: Appearance.spacing.smaller / 2
+ 
+                     StyledText {
+-                        text: qsTr("Display Name")
++                        text: qsTr("显示名称")
+                         font.pointSize: Appearance.font.size.small
+                         color: Colours.palette.m3onSurfaceVariant
+                     }
+@@ -600,7 +600,7 @@
+                     spacing: Appearance.spacing.smaller / 2
+ 
+                     StyledText {
+-                        text: qsTr("Interface (e.g., wg0, torguard)")
++                        text: qsTr("接口（例如 wg0、torguard）")
+                         font.pointSize: Appearance.font.size.small
+                         color: Colours.palette.m3onSurfaceVariant
+                     }
+@@ -638,7 +638,7 @@
+ 
+                     TextButton {
+                         Layout.fillWidth: true
+-                        text: qsTr("Cancel")
++                        text: qsTr("取消")
+                         inactiveColour: Colours.tPalette.m3surfaceContainerHigh
+                         inactiveOnColour: Colours.palette.m3onSurface
+                         onClicked: vpnDialog.closeWithAnimation()
+@@ -646,7 +646,7 @@
+ 
+                     TextButton {
+                         Layout.fillWidth: true
+-                        text: qsTr("Save")
++                        text: qsTr("保存")
+                         enabled: vpnDialog.interfaceName.length > 0
+                         inactiveColour: Colours.palette.m3primaryContainer
+                         inactiveOnColour: Colours.palette.m3onPrimaryContainer
+diff -ruN orig/modules/controlcenter/network/VpnSettings.qml new/modules/controlcenter/network/VpnSettings.qml
+--- orig/modules/controlcenter/network/VpnSettings.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/VpnSettings.qml	2026-02-17 23:31:07.707564025 +0800
+@@ -22,18 +22,18 @@
+ 
+     SettingsHeader {
+         icon: "vpn_key"
+-        title: qsTr("VPN Settings")
++        title: qsTr("VPN 设置")
+     }
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("General")
+-        description: qsTr("VPN configuration")
++        title: qsTr("常规")
++        description: qsTr("VPN 配置")
+     }
+ 
+     SectionContainer {
+         ToggleRow {
+-            label: qsTr("VPN enabled")
++            label: qsTr("启用 VPN")
+             checked: Config.utilities.vpn.enabled
+             toggle.onToggled: {
+                 Config.utilities.vpn.enabled = checked;
+@@ -44,8 +44,8 @@
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Providers")
+-        description: qsTr("Manage VPN providers")
++        title: qsTr("提供商")
++        description: qsTr("管理 VPN 提供商")
+     }
+ 
+     SectionContainer {
+@@ -108,7 +108,7 @@
+                             }
+ 
+                             StyledText {
+-                                text: qsTr("%1 • %2").arg(modelData.name).arg(modelData.interface || qsTr("No interface"))
++                                text: qsTr("%1 • %2").arg(modelData.name).arg(modelData.interface || qsTr("无接口"))
+                                 font.pointSize: Appearance.font.size.small
+                                 color: Colours.palette.m3outline
+                             }
+@@ -156,7 +156,7 @@
+         TextButton {
+             Layout.fillWidth: true
+             Layout.topMargin: Appearance.spacing.normal
+-            text: qsTr("+ Add Provider")
++            text: qsTr("+ 添加提供商")
+             inactiveColour: Colours.palette.m3primaryContainer
+             inactiveOnColour: Colours.palette.m3onPrimaryContainer
+ 
+@@ -168,8 +168,8 @@
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Quick Add")
+-        description: qsTr("Add common VPN providers")
++        title: qsTr("快速添加")
++        description: qsTr("添加常用 VPN 提供商")
+     }
+ 
+     SectionContainer {
+@@ -177,7 +177,7 @@
+ 
+         TextButton {
+             Layout.fillWidth: true
+-            text: qsTr("+ Add NetBird")
++            text: qsTr("+ 添加 NetBird")
+             inactiveColour: Colours.tPalette.m3surfaceContainerHigh
+             inactiveOnColour: Colours.palette.m3onSurface
+ 
+@@ -195,7 +195,7 @@
+ 
+         TextButton {
+             Layout.fillWidth: true
+-            text: qsTr("+ Add Tailscale")
++            text: qsTr("+ 添加 Tailscale")
+             inactiveColour: Colours.tPalette.m3surfaceContainerHigh
+             inactiveOnColour: Colours.palette.m3onSurface
+ 
+@@ -213,7 +213,7 @@
+ 
+         TextButton {
+             Layout.fillWidth: true
+-            text: qsTr("+ Add Cloudflare WARP")
++            text: qsTr("+ 添加 Cloudflare WARP")
+             inactiveColour: Colours.tPalette.m3surfaceContainerHigh
+             inactiveOnColour: Colours.palette.m3onSurface
+ 
+diff -ruN orig/modules/controlcenter/network/WirelessDetails.qml new/modules/controlcenter/network/WirelessDetails.qml
+--- orig/modules/controlcenter/network/WirelessDetails.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/WirelessDetails.qml	2026-02-17 23:31:07.709798832 +0800
+@@ -95,7 +95,7 @@
+     headerComponent: Component {
+         ConnectionHeader {
+             icon: root.network?.isSecure ? "lock" : "wifi"
+-            title: root.network?.ssid ?? qsTr("Unknown")
++            title: root.network?.ssid ?? qsTr("未知")
+         }
+     }
+ 
+@@ -105,13 +105,13 @@
+                 spacing: Appearance.spacing.normal
+ 
+                 SectionHeader {
+-                    title: qsTr("Connection status")
+-                    description: qsTr("Connection settings for this network")
++                    title: qsTr("连接状态")
++                    description: qsTr("此网络的连接设置")
+                 }
+ 
+                 SectionContainer {
+                     ToggleRow {
+-                        label: qsTr("Connected")
++                        label: qsTr("已连接")
+                         checked: root.network?.active ?? false
+                         toggle.onToggled: {
+                             if (checked) {
+@@ -134,7 +134,7 @@
+                         }
+                         inactiveColour: Colours.palette.m3secondaryContainer
+                         inactiveOnColour: Colours.palette.m3onSecondaryContainer
+-                        text: qsTr("Forget Network")
++                        text: qsTr("忘记网络")
+ 
+                         onClicked: {
+                             if (root.network && root.network.ssid) {
+@@ -153,8 +153,8 @@
+                 spacing: Appearance.spacing.normal
+ 
+                 SectionHeader {
+-                    title: qsTr("Network properties")
+-                    description: qsTr("Additional information")
++                    title: qsTr("网络属性")
++                    description: qsTr("附加信息")
+                 }
+ 
+                 SectionContainer {
+@@ -162,31 +162,31 @@
+ 
+                     PropertyRow {
+                         label: qsTr("SSID")
+-                        value: root.network?.ssid ?? qsTr("Unknown")
++                        value: root.network?.ssid ?? qsTr("未知")
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+                         label: qsTr("BSSID")
+-                        value: root.network?.bssid ?? qsTr("Unknown")
++                        value: root.network?.bssid ?? qsTr("未知")
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+-                        label: qsTr("Signal strength")
+-                        value: root.network ? qsTr("%1%").arg(root.network.strength) : qsTr("N/A")
++                        label: qsTr("信号强度")
++                        value: root.network ? qsTr("%1%").arg(root.network.strength) : qsTr("不适用")
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+-                        label: qsTr("Frequency")
+-                        value: root.network ? qsTr("%1 MHz").arg(root.network.frequency) : qsTr("N/A")
++                        label: qsTr("频率")
++                        value: root.network ? qsTr("%1 MHz").arg(root.network.frequency) : qsTr("不适用")
+                     }
+ 
+                     PropertyRow {
+                         showTopMargin: true
+-                        label: qsTr("Security")
+-                        value: root.network ? (root.network.isSecure ? root.network.security : qsTr("Open")) : qsTr("N/A")
++                        label: qsTr("安全性")
++                        value: root.network ? (root.network.isSecure ? root.network.security : qsTr("开放")) : qsTr("不适用")
+                     }
+                 }
+             }
+@@ -196,8 +196,8 @@
+                 spacing: Appearance.spacing.normal
+ 
+                 SectionHeader {
+-                    title: qsTr("Connection information")
+-                    description: qsTr("Network connection details")
++                    title: qsTr("连接信息")
++                    description: qsTr("网络连接详情")
+                 }
+ 
+                 SectionContainer {
+diff -ruN orig/modules/controlcenter/network/WirelessList.qml new/modules/controlcenter/network/WirelessList.qml
+--- orig/modules/controlcenter/network/WirelessList.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/WirelessList.qml	2026-02-17 23:31:07.711808502 +0800
+@@ -19,14 +19,14 @@
+ 
+     required property Session session
+ 
+-    title: qsTr("Networks (%1)").arg(Nmcli.networks.length)
+-    description: qsTr("All available WiFi networks")
++    title: qsTr("网络（%1）").arg(Nmcli.networks.length)
++    description: qsTr("所有可用 Wi-Fi 网络")
+     activeItem: session.network.active
+ 
+     titleSuffix: Component {
+         StyledText {
+             visible: Nmcli.scanning
+-            text: qsTr("Scanning...")
++            text: qsTr("扫描中...")
+             color: Colours.palette.m3primary
+             font.pointSize: Appearance.font.size.small
+         }
+@@ -45,7 +45,7 @@
+             spacing: Appearance.spacing.smaller
+ 
+             StyledText {
+-                text: qsTr("Settings")
++                text: qsTr("设置")
+                 font.pointSize: Appearance.font.size.large
+                 font.weight: 500
+             }
+@@ -155,7 +155,7 @@
+                         elide: Text.ElideRight
+                         maximumLineCount: 1
+ 
+-                        text: modelData.ssid || qsTr("Unknown")
++                        text: modelData.ssid || qsTr("未知")
+                     }
+ 
+                     RowLayout {
+@@ -166,13 +166,13 @@
+                             Layout.fillWidth: true
+                             text: {
+                                 if (modelData.active)
+-                                    return qsTr("Connected");
++                                    return qsTr("已连接");
+                                 if (modelData.isSecure && modelData.security && modelData.security.length > 0) {
+                                     return modelData.security;
+                                 }
+                                 if (modelData.isSecure)
+-                                    return qsTr("Secured");
+-                                return qsTr("Open");
++                                    return qsTr("已加密");
++                                return qsTr("开放");
+                             }
+                             color: modelData.active ? Colours.palette.m3primary : Colours.palette.m3outline
+                             font.pointSize: Appearance.font.size.small
+diff -ruN orig/modules/controlcenter/network/WirelessPasswordDialog.qml new/modules/controlcenter/network/WirelessPasswordDialog.qml
+--- orig/modules/controlcenter/network/WirelessPasswordDialog.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/WirelessPasswordDialog.qml	2026-02-17 23:31:07.715670444 +0800
+@@ -114,14 +114,14 @@
+ 
+             StyledText {
+                 Layout.alignment: Qt.AlignHCenter
+-                text: qsTr("Enter password")
++                text: qsTr("输入密码")
+                 font.pointSize: Appearance.font.size.large
+                 font.weight: 500
+             }
+ 
+             StyledText {
+                 Layout.alignment: Qt.AlignHCenter
+-                text: root.network ? qsTr("Network: %1").arg(root.network.ssid) : ""
++                text: root.network ? qsTr("网络：%1").arg(root.network.ssid) : ""
+                 color: Colours.palette.m3outline
+                 font.pointSize: Appearance.font.size.small
+             }
+@@ -134,10 +134,10 @@
+                 visible: connectButton.connecting || connectButton.hasError
+                 text: {
+                     if (connectButton.hasError) {
+-                        return qsTr("Connection failed. Please check your password and try again.");
++                        return qsTr("连接失败。请检查密码后重试。");
+                     }
+                     if (connectButton.connecting) {
+-                        return qsTr("Connecting...");
++                        return qsTr("连接中...");
+                     }
+                     return "";
+                 }
+@@ -248,7 +248,7 @@
+                 StyledText {
+                     id: placeholder
+                     anchors.centerIn: parent
+-                    text: qsTr("Password")
++                    text: qsTr("密码")
+                     color: Colours.palette.m3outline
+                     font.pointSize: Appearance.font.size.normal
+                     font.family: Appearance.font.family.mono
+@@ -350,7 +350,7 @@
+                     Layout.minimumHeight: Appearance.font.size.normal + Appearance.padding.normal * 2
+                     inactiveColour: Colours.palette.m3secondaryContainer
+                     inactiveOnColour: Colours.palette.m3onSecondaryContainer
+-                    text: qsTr("Cancel")
++                    text: qsTr("取消")
+ 
+                     onClicked: root.closeDialog()
+                 }
+@@ -365,7 +365,7 @@
+                     Layout.minimumHeight: Appearance.font.size.normal + Appearance.padding.normal * 2
+                     inactiveColour: Colours.palette.m3primary
+                     inactiveOnColour: Colours.palette.m3onPrimary
+-                    text: qsTr("Connect")
++                    text: qsTr("连接")
+                     enabled: passwordContainer.passwordBuffer.length > 0 && !connecting
+ 
+                     onClicked: {
+@@ -381,7 +381,7 @@
+                         hasError = false;
+                         connecting = true;
+                         enabled = false;
+-                        text = qsTr("Connecting...");
++                        text = qsTr("连接中...");
+ 
+                         NetworkConnection.connectWithPassword(root.network, password, result => {
+                             if (result && result.success) {} else if (result && result.needsPassword) {
+@@ -389,7 +389,7 @@
+                                 connecting = false;
+                                 hasError = true;
+                                 enabled = true;
+-                                text = qsTr("Connect");
++                                text = qsTr("连接");
+                                 passwordContainer.passwordBuffer = "";
+                                 if (root.network && root.network.ssid) {
+                                     Nmcli.forgetNetwork(root.network.ssid);
+@@ -399,7 +399,7 @@
+                                 connecting = false;
+                                 hasError = true;
+                                 enabled = true;
+-                                text = qsTr("Connect");
++                                text = qsTr("连接");
+                                 passwordContainer.passwordBuffer = "";
+                                 if (root.network && root.network.ssid) {
+                                     Nmcli.forgetNetwork(root.network.ssid);
+@@ -432,7 +432,7 @@
+                 connectButton.connecting = false;
+                 connectButton.hasError = true;
+                 connectButton.enabled = true;
+-                connectButton.text = qsTr("Connect");
++                connectButton.text = qsTr("连接");
+                 passwordContainer.passwordBuffer = "";
+                 if (root.network && root.network.ssid) {
+                     Nmcli.forgetNetwork(root.network.ssid);
+@@ -469,7 +469,7 @@
+                 if (stillConnected) {
+                     connectionMonitor.stop();
+                     connectButton.connecting = false;
+-                    connectButton.text = qsTr("Connect");
++                    connectButton.text = qsTr("连接");
+                     closeDialog();
+                 }
+             }
+@@ -489,7 +489,7 @@
+                 connectButton.connecting = false;
+                 connectButton.hasError = true;
+                 connectButton.enabled = true;
+-                connectButton.text = qsTr("Connect");
++                connectButton.text = qsTr("连接");
+                 passwordContainer.passwordBuffer = "";
+                 Nmcli.forgetNetwork(ssid);
+             }
+@@ -505,7 +505,7 @@
+         passwordContainer.passwordBuffer = "";
+         connectButton.connecting = false;
+         connectButton.hasError = false;
+-        connectButton.text = qsTr("Connect");
++        connectButton.text = qsTr("连接");
+         connectionMonitor.stop();
+     }
+ }
+diff -ruN orig/modules/controlcenter/network/WirelessSettings.qml new/modules/controlcenter/network/WirelessSettings.qml
+--- orig/modules/controlcenter/network/WirelessSettings.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/network/WirelessSettings.qml	2026-02-17 23:31:07.718380895 +0800
+@@ -19,18 +19,18 @@
+ 
+     SettingsHeader {
+         icon: "wifi"
+-        title: qsTr("Network settings")
++        title: qsTr("网络设置")
+     }
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("WiFi status")
+-        description: qsTr("General WiFi settings")
++        title: qsTr("Wi-Fi 状态")
++        description: qsTr("Wi-Fi 常规设置")
+     }
+ 
+     SectionContainer {
+         ToggleRow {
+-            label: qsTr("WiFi enabled")
++            label: qsTr("启用 Wi-Fi")
+             checked: Nmcli.wifiEnabled
+             toggle.onToggled: {
+                 Nmcli.enableWifi(checked);
+@@ -40,34 +40,34 @@
+ 
+     SectionHeader {
+         Layout.topMargin: Appearance.spacing.large
+-        title: qsTr("Network information")
+-        description: qsTr("Current network connection")
++        title: qsTr("网络信息")
++        description: qsTr("当前网络连接")
+     }
+ 
+     SectionContainer {
+         contentSpacing: Appearance.spacing.small / 2
+ 
+         PropertyRow {
+-            label: qsTr("Connected network")
+-            value: Nmcli.active ? Nmcli.active.ssid : qsTr("Not connected")
++            label: qsTr("已连接网络")
++            value: Nmcli.active ? Nmcli.active.ssid : qsTr("未连接")
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Signal strength")
+-            value: Nmcli.active ? qsTr("%1%").arg(Nmcli.active.strength) : qsTr("N/A")
++            label: qsTr("信号强度")
++            value: Nmcli.active ? qsTr("%1%").arg(Nmcli.active.strength) : qsTr("不适用")
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Security")
+-            value: Nmcli.active ? (Nmcli.active.isSecure ? qsTr("Secured") : qsTr("Open")) : qsTr("N/A")
++            label: qsTr("安全性")
++            value: Nmcli.active ? (Nmcli.active.isSecure ? qsTr("已加密") : qsTr("开放")) : qsTr("不适用")
+         }
+ 
+         PropertyRow {
+             showTopMargin: true
+-            label: qsTr("Frequency")
+-            value: Nmcli.active ? qsTr("%1 MHz").arg(Nmcli.active.frequency) : qsTr("N/A")
++            label: qsTr("频率")
++            value: Nmcli.active ? qsTr("%1 MHz").arg(Nmcli.active.frequency) : qsTr("不适用")
+         }
+     }
+ }
+diff -ruN orig/modules/controlcenter/taskbar/TaskbarPane.qml new/modules/controlcenter/taskbar/TaskbarPane.qml
+--- orig/modules/controlcenter/taskbar/TaskbarPane.qml	2026-02-17 17:24:27.000000000 +0800
++++ new/modules/controlcenter/taskbar/TaskbarPane.qml	2026-02-17 19:34:42.584306694 +0800
+@@ -161,7 +161,7 @@
+                     spacing: Appearance.spacing.smaller
+ 
+                     StyledText {
+-                        text: qsTr("Taskbar")
++                        text: qsTr("任务栏")
+                         font.pointSize: Appearance.font.size.large
+                         font.weight: 500
+                     }
+@@ -172,7 +172,7 @@
+                     alignTop: true
+ 
+                     StyledText {
+-                        text: qsTr("Status Icons")
++                        text: qsTr("状态图标")
+                         font.pointSize: Appearance.font.size.normal
+                     }
+ 
+@@ -181,7 +181,7 @@
+ 
+                         options: [
+                             {
+-                                label: qsTr("Speakers"),
++                                label: qsTr("扬声器"),
+                                 propertyName: "showAudio",
+                                 onToggled: function (checked) {
+                                     root.showAudio = checked;
+@@ -189,7 +189,7 @@
+                                 }
+                             },
+                             {
+-                                label: qsTr("Microphone"),
++                                label: qsTr("麦克风"),
+                                 propertyName: "showMicrophone",
+                                 onToggled: function (checked) {
+                                     root.showMicrophone = checked;
+@@ -197,7 +197,7 @@
+                                 }
+                             },
+                             {
+-                                label: qsTr("Keyboard"),
++                                label: qsTr("键盘"),
+                                 propertyName: "showKbLayout",
+                                 onToggled: function (checked) {
+                                     root.showKbLayout = checked;
+@@ -205,7 +205,7 @@
+                                 }
+                             },
+                             {
+-                                label: qsTr("Network"),
++                                label: qsTr("网络"),
+                                 propertyName: "showNetwork",
+                                 onToggled: function (checked) {
+                                     root.showNetwork = checked;
+@@ -213,7 +213,7 @@
+                                 }
+                             },
+                             {
+-                                label: qsTr("Wifi"),
++                                label: qsTr("Wi-Fi"),
+                                 propertyName: "showWifi",
+                                 onToggled: function (checked) {
+                                     root.showWifi = checked;
+@@ -221,7 +221,7 @@
+                                 }
+                             },
+                             {
+-                                label: qsTr("Bluetooth"),
++                                label: qsTr("蓝牙"),
+                                 propertyName: "showBluetooth",
+                                 onToggled: function (checked) {
+                                     root.showBluetooth = checked;
+@@ -229,7 +229,7 @@
+                                 }
+                             },
+                             {
+-                                label: qsTr("Battery"),
++                                label: qsTr("电池"),
+                                 propertyName: "showBattery",
+                                 onToggled: function (checked) {
+                                     root.showBattery = checked;
+@@ -237,7 +237,7 @@
+                                 }
+                             },
+                             {
+-                                label: qsTr("Capslock"),
++                                label: qsTr("大写锁定"),
+                                 propertyName: "showLockStatus",
+                                 onToggled: function (checked) {
+                                     root.showLockStatus = checked;
+@@ -264,7 +264,7 @@
+                             alignTop: true
+ 
+                             StyledText {
+-                                text: qsTr("Workspaces")
++                                text: qsTr("工作区")
+                                 font.pointSize: Appearance.font.size.normal
+                             }
+ 
+@@ -288,7 +288,7 @@
+ 
+                                     StyledText {
+                                         Layout.fillWidth: true
+-                                        text: qsTr("Shown")
++                                        text: qsTr("显示数量")
+                                     }
+ 
+                                     CustomSpinBox {
+@@ -323,7 +323,7 @@
+ 
+                                     StyledText {
+                                         Layout.fillWidth: true
+-                                        text: qsTr("Active indicator")
++                                        text: qsTr("活动指示器")
+                                     }
+ 
+                                     StyledSwitch {
+@@ -356,7 +356,7 @@
+ 
+                                     StyledText {
+                                         Layout.fillWidth: true
+-                                        text: qsTr("Occupied background")
++                                        text: qsTr("已占用背景")
+                                     }
+ 
+                                     StyledSwitch {
+@@ -389,7 +389,7 @@
+ 
+                                     StyledText {
+                                         Layout.fillWidth: true
+-                                        text: qsTr("Show windows")
++                                        text: qsTr("显示窗口")
+                                     }
+ 
+                                     StyledSwitch {
+@@ -422,7 +422,7 @@
+ 
+                                     StyledText {
+                                         Layout.fillWidth: true
+-                                        text: qsTr("Per monitor workspaces")
++                                        text: qsTr("按显示器划分工作区")
+                                     }
+ 
+                                     StyledSwitch {
+@@ -441,7 +441,7 @@
+                             alignTop: true
+ 
+                             StyledText {
+-                                text: qsTr("Scroll Actions")
++                                text: qsTr("滚轮操作")
+                                 font.pointSize: Appearance.font.size.normal
+                             }
+ 
+@@ -450,7 +450,7 @@
+ 
+                                 options: [
+                                     {
+-                                        label: qsTr("Workspaces"),
++                                        label: qsTr("工作区"),
+                                         propertyName: "scrollWorkspaces",
+                                         onToggled: function (checked) {
+                                             root.scrollWorkspaces = checked;
+@@ -458,7 +458,7 @@
+                                         }
+                                     },
+                                     {
+-                                        label: qsTr("Volume"),
++                                        label: qsTr("音量"),
+                                         propertyName: "scrollVolume",
+                                         onToggled: function (checked) {
+                                             root.scrollVolume = checked;
+@@ -466,7 +466,7 @@
+                                         }
+                                     },
+                                     {
+-                                        label: qsTr("Brightness"),
++                                        label: qsTr("亮度"),
+                                         propertyName: "scrollBrightness",
+                                         onToggled: function (checked) {
+                                             root.scrollBrightness = checked;
+@@ -489,12 +489,12 @@
+                             alignTop: true
+ 
+                             StyledText {
+-                                text: qsTr("Clock")
++                                text: qsTr("时钟")
+                                 font.pointSize: Appearance.font.size.normal
+                             }
+ 
+                             SwitchRow {
+-                                label: qsTr("Show clock icon")
++                                label: qsTr("显示时钟图标")
+                                 checked: root.clockShowIcon
+                                 onToggled: checked => {
+                                     root.clockShowIcon = checked;
+@@ -508,12 +508,12 @@
+                             alignTop: true
+ 
+                             StyledText {
+-                                text: qsTr("Bar Behavior")
++                                text: qsTr("任务栏行为")
+                                 font.pointSize: Appearance.font.size.normal
+                             }
+ 
+                             SwitchRow {
+-                                label: qsTr("Persistent")
++                                label: qsTr("常驻显示")
+                                 checked: root.persistent
+                                 onToggled: checked => {
+                                     root.persistent = checked;
+@@ -522,7 +522,7 @@
+                             }
+ 
+                             SwitchRow {
+-                                label: qsTr("Show on hover")
++                                label: qsTr("悬停显示")
+                                 checked: root.showOnHover
+                                 onToggled: checked => {
+                                     root.showOnHover = checked;
+@@ -536,7 +536,7 @@
+                                 SliderInput {
+                                     Layout.fillWidth: true
+ 
+-                                    label: qsTr("Drag threshold")
++                                    label: qsTr("拖拽阈值")
+                                     value: root.dragThreshold
+                                     from: 0
+                                     to: 100
+@@ -568,12 +568,12 @@
+                             alignTop: true
+ 
+                             StyledText {
+-                                text: qsTr("Popouts")
++                                text: qsTr("弹出面板")
+                                 font.pointSize: Appearance.font.size.normal
+                             }
+ 
+                             SwitchRow {
+-                                label: qsTr("Active window")
++                                label: qsTr("当前窗口")
+                                 checked: root.popoutActiveWindow
+                                 onToggled: checked => {
+                                     root.popoutActiveWindow = checked;
+@@ -582,7 +582,7 @@
+                             }
+ 
+                             SwitchRow {
+-                                label: qsTr("Tray")
++                                label: qsTr("托盘")
+                                 checked: root.popoutTray
+                                 onToggled: checked => {
+                                     root.popoutTray = checked;
+@@ -591,7 +591,7 @@
+                             }
+ 
+                             SwitchRow {
+-                                label: qsTr("Status icons")
++                                label: qsTr("状态图标")
+                                 checked: root.popoutStatusIcons
+                                 onToggled: checked => {
+                                     root.popoutStatusIcons = checked;
+@@ -605,7 +605,7 @@
+                             alignTop: true
+ 
+                             StyledText {
+-                                text: qsTr("Tray Settings")
++                                text: qsTr("托盘设置")
+                                 font.pointSize: Appearance.font.size.normal
+                             }
+ 
+@@ -614,7 +614,7 @@
+ 
+                                 options: [
+                                     {
+-                                        label: qsTr("Background"),
++                                        label: qsTr("背景"),
+                                         propertyName: "trayBackground",
+                                         onToggled: function (checked) {
+                                             root.trayBackground = checked;
+@@ -622,7 +622,7 @@
+                                         }
+                                     },
+                                     {
+-                                        label: qsTr("Compact"),
++                                        label: qsTr("紧凑"),
+                                         propertyName: "trayCompact",
+                                         onToggled: function (checked) {
+                                             root.trayCompact = checked;
+@@ -630,7 +630,7 @@
+                                         }
+                                     },
+                                     {
+-                                        label: qsTr("Recolour"),
++                                        label: qsTr("重新着色"),
+                                         propertyName: "trayRecolour",
+                                         onToggled: function (checked) {
+                                             root.trayRecolour = checked;
