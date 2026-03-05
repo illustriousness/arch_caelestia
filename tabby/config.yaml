@@ -1,0 +1,388 @@
+version: 8
+groups: []
+configSync:
+  parts: {}
+hotkeys:
+  toggle-window:
+    - Ctrl-Space
+  copy-current-path: []
+  ctrl-c:
+    - Ctrl-C
+  copy:
+    - Ctrl-Shift-C
+  paste:
+    - Ctrl-Shift-V
+    - Shift-Insert
+  select-all:
+    - Ctrl-Shift-A
+  clear: []
+  zoom-in:
+    - Ctrl-=
+    - Ctrl-Shift-=
+  zoom-out:
+    - Ctrl--
+    - Ctrl-Shift--
+  reset-zoom:
+    - Ctrl-0
+  home:
+    - Home
+  end:
+    - End
+  previous-word:
+    - Ctrl-Left
+  next-word:
+    - Ctrl-Right
+  delete-previous-word:
+    - Ctrl-Backspace
+  delete-line:
+    - Ctrl-Shift-Backspace
+  delete-next-word:
+    - Ctrl-Delete
+  search:
+    - Ctrl-Shift-F
+  pane-focus-all:
+    - Ctrl-Shift-I
+  focus-all-tabs:
+    - Ctrl-Alt-Shift-I
+  scroll-to-top:
+    - Ctrl-PageUp
+  scroll-page-up:
+    - Alt-PageUp
+  scroll-up:
+    - Ctrl-Shift-Up
+  scroll-down:
+    - Ctrl-Shift-Down
+  scroll-page-down:
+    - Alt-PageDown
+  scroll-to-bottom:
+    - Ctrl-PageDown
+  restart-telnet-session: []
+  restart-ssh-session: []
+  launch-winscp: []
+  settings-tab: {}
+  settings:
+    - Ctrl-,
+  serial:
+    - Alt-K
+  restart-serial-session: []
+  new-tab:
+    - Ctrl-Shift-T
+  new-window:
+    - Ctrl-Shift-N
+  profile: {}
+  profile-selectors: {}
+  group-selectors: {}
+  toggle-fullscreen:
+    - F11
+  close-tab:
+    - Ctrl-W
+  reopen-tab:
+    - Ctrl-Shift-Z
+  toggle-last-tab: []
+  rename-tab:
+    - Ctrl-Shift-R
+  next-tab:
+    - Ctrl-Shift-Right
+    - Ctrl-Tab
+  previous-tab:
+    - Ctrl-Shift-Left
+    - Ctrl-Shift-Tab
+  move-tab-left:
+    - Ctrl-Shift-PageUp
+  move-tab-right:
+    - Ctrl-Shift-PageDown
+  rearrange-panes:
+    - Ctrl-Shift
+  duplicate-tab: []
+  restart-tab: []
+  reconnect-tab: []
+  disconnect-tab: []
+  explode-tab:
+    - Ctrl-Shift-.
+  combine-tabs:
+    - Ctrl-Shift-,
+  tab-1:
+    - Alt-1
+  tab-2:
+    - Alt-2
+  tab-3:
+    - Alt-3
+  tab-4:
+    - Alt-4
+  tab-5:
+    - Alt-5
+  tab-6:
+    - Alt-6
+  tab-7:
+    - Alt-7
+  tab-8:
+    - Alt-8
+  tab-9:
+    - Alt-9
+  tab-10:
+    - Alt-0
+  tab-11: []
+  tab-12: []
+  tab-13: []
+  tab-14: []
+  tab-15: []
+  tab-16: []
+  tab-17: []
+  tab-18: []
+  tab-19: []
+  tab-20: []
+  split-right:
+    - Ctrl-Shift-S
+  split-bottom:
+    - Ctrl-Shift-D
+  split-left: []
+  split-top: []
+  pane-nav-right:
+    - Ctrl-Alt-Right
+  pane-nav-down:
+    - Ctrl-Alt-Down
+  pane-nav-up:
+    - Ctrl-Alt-Up
+  pane-nav-left:
+    - Ctrl-Alt-Left
+  pane-nav-previous:
+    - Ctrl-Alt-[
+  pane-nav-next:
+    - Ctrl-Alt-]
+  pane-nav-1: []
+  pane-nav-2: []
+  pane-nav-3: []
+  pane-nav-4: []
+  pane-nav-5: []
+  pane-nav-6: []
+  pane-nav-7: []
+  pane-nav-8: []
+  pane-nav-9: []
+  pane-maximize:
+    - Ctrl-Alt-Enter
+  pane-increase-vertical: []
+  pane-decrease-vertical: []
+  pane-increase-horizontal: []
+  pane-decrease-horizontal: []
+  close-pane: []
+  switch-profile:
+    - Ctrl-Alt-T
+  profile-selector:
+    - Ctrl-Shift-E
+  command-selector:
+    - Ctrl-Shift-P
+  ai-assistant-toggle:
+    - Ctrl-Shift-A
+  ai-command-generation:
+    - Ctrl-Shift-G
+  ai-explain-command:
+    - Ctrl-Shift-E
+terminal:
+  searchOptions: {}
+  colorScheme:
+    name: Glacier
+    foreground: '#ffffff'
+    background: '#0c1115'
+    cursor: '#6c6c6c'
+    colors:
+      - '#2e343c'
+      - '#bd0f2f'
+      - '#35a770'
+      - '#fb9435'
+      - '#1f5872'
+      - '#bd2523'
+      - '#778397'
+      - '#ffffff'
+      - '#404a55'
+      - '#bd0f2f'
+      - '#49e998'
+      - '#fddf6e'
+      - '#2a8bc1'
+      - '#ea4727'
+      - '#a0b6d3'
+      - '#ffffff'
+  rightClick: clipboard
+  copyAsHTML: false
+  bracketedPaste: false
+  lightColorScheme:
+    name: 3024 Day
+    foreground: '#4a4543'
+    background: '#f7f7f7'
+    cursor: '#4a4543'
+    colors:
+      - '#090300'
+      - '#db2d20'
+      - '#01a252'
+      - '#fded02'
+      - '#01a0e4'
+      - '#a16a94'
+      - '#b5e4f4'
+      - '#a5a2a2'
+      - '#5c5855'
+      - '#e8bbd0'
+      - '#3a3432'
+      - '#4a4543'
+      - '#807d7c'
+      - '#d6d5d4'
+      - '#cdab53'
+      - '#f7f7f7'
+  customColorSchemes: []
+  fontSize: 18
+  linePadding: 3
+  bell: visual
+  warnOnMultilinePaste: false
+  font: Noto Sans Mono CJK SC
+  showBuiltinProfiles: false
+  hideCloseButton: true
+  hideTabOptionsButton: true
+ssh:
+  knownHosts:
+    - host: 139.9.65.245
+      port: 22
+      type: ecdsa-sha2-nistp256
+      digest: Ve6sWjuXVHqsh4e41fEvvR9p94GZGEYIulLA35IfCOU=
+    - host: 192.168.137.50
+      port: 22
+      type: ecdsa-sha2-nistp256
+      digest: ysSIoNHiQ02Rk8CXaMHNJjs74YElhCjh1nK+RXfn0l4=
+  verifyHostKeys: false
+clickableLinks:
+  modifier: ctrlKey
+accessibility: {}
+appearance:
+  opacity: 0.57
+  vibrancy: true
+  spaciness: 1.4
+  tabsInFullscreen: true
+  colorSchemeMode: auto
+hacks: {}
+providerBlacklist: []
+commandBlacklist: []
+language: zh-CN
+enableWelcomeTab: false
+pluginBlacklist: []
+profileDefaults:
+  ssh:
+    disableDynamicTitle: true
+    type: ssh
+  serial:
+    type: serial
+    options:
+      input: {}
+      outputNewlines: implicit_cr
+      baudrate: 115200
+      port: ''
+  local:
+    type: local
+    options:
+      env: {}
+      command: clear
+profileBlacklist: []
+profiles:
+  - name: alpha
+    icon: fas fa-desktop
+    options:
+      host: 192.168.137.50
+      algorithms:
+        hmac:
+          - hmac-sha1
+          - hmac-sha1-etm@openssh.com
+          - hmac-sha2-256
+          - hmac-sha2-256-etm@openssh.com
+          - hmac-sha2-512
+          - hmac-sha2-512-etm@openssh.com
+        kex:
+          - curve25519-sha256
+          - curve25519-sha256@libssh.org
+          - diffie-hellman-group14-sha256
+          - diffie-hellman-group16-sha512
+          - ext-info-c
+          - ext-info-s
+          - kex-strict-c-v00@openssh.com
+          - kex-strict-s-v00@openssh.com
+          - mlkem768x25519-sha256
+        cipher:
+          - aes128-ctr
+          - aes192-ctr
+          - aes256-ctr
+          - aes256-gcm@openssh.com
+          - chacha20-poly1305@openssh.com
+        serverHostKey:
+          - ecdsa-sha2-nistp256
+          - ecdsa-sha2-nistp521
+          - rsa-sha2-256
+          - rsa-sha2-512
+          - ssh-ed25519
+          - ssh-rsa
+        compression:
+          - none
+      input: {}
+      privateKeys: []
+      forwardedPorts: []
+      scripts: []
+    weight: -1
+    type: ssh
+    id: ssh:custom:alpha:6b4575d8-eeb3-4a0e-82b7-d268d74e6889
+  - icon: fas fa-desktop
+    options:
+      host: 139.9.65.245
+      algorithms:
+        hmac:
+          - hmac-sha1
+          - hmac-sha1-etm@openssh.com
+          - hmac-sha2-256
+          - hmac-sha2-256-etm@openssh.com
+          - hmac-sha2-512
+          - hmac-sha2-512-etm@openssh.com
+        kex:
+          - curve25519-sha256
+          - curve25519-sha256@libssh.org
+          - diffie-hellman-group14-sha256
+          - diffie-hellman-group16-sha512
+          - ext-info-c
+          - ext-info-s
+          - kex-strict-c-v00@openssh.com
+          - kex-strict-s-v00@openssh.com
+          - mlkem768x25519-sha256
+        cipher:
+          - aes128-ctr
+          - aes192-ctr
+          - aes256-ctr
+          - aes256-gcm@openssh.com
+          - chacha20-poly1305@openssh.com
+        serverHostKey:
+          - ecdsa-sha2-nistp256
+          - ecdsa-sha2-nistp521
+          - rsa-sha2-256
+          - rsa-sha2-512
+          - ssh-ed25519
+          - ssh-rsa
+        compression:
+          - none
+      input: {}
+      privateKeys: []
+      forwardedPorts: []
+      scripts: []
+    weight: -1
+    name: huawei cloud
+    type: ssh
+    id: ssh:custom:huawei-cloud:50fd439b-d96d-42fb-8b0f-c425ac0267be
+  - type: telnet
+    name: rtt view
+    icon: fas fa-network-wired
+    options:
+      host: 127.0.0.1
+      port: 19021
+      inputMode: null
+      outputNewlines: implicit_cr
+      input: {}
+      scripts: []
+    id: telnet:custom:rtt-view:c2f5b9c5-652c-4217-addb-e2b7b23061f5
+aiAssistant:
+  providers:
+    openai: {}
+    anthropic: {}
+    minimax: {}
+    glm: {}
+    openaiCompatible: {}
+  security: {}

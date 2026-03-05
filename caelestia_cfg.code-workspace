@@ -7,8 +7,13 @@
 			"path": "../../../cfg/bak/home__lyc__.config__hypr.20260217-171824"
 		},
 		{
+			"path": "/home/lyc/.config/quickshell/caelestia"
+		},
+		{
 			"path": "../../../cfg/caelestia"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.autoSave": "off"
+	}
 }

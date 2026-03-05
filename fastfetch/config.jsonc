@@ -1,0 +1,121 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+    "logo": null,
+    "display": {
+        "separator": "  ",
+        "color": "white",
+        "constants": ["\u001b[37m", "\u001b[38;5;16m", "\u001b[38;5;17m", "\u001b[38;5;18m"]
+    },
+    "modules": [
+        "break",
+        {
+            "type": "custom",
+            "key": "╭────────────────────────────────────────────────────────────╮"
+        },
+        {
+            "type": "os",
+            "key": "│ {$4}󰻀{$1}  os"
+        },
+        {
+            "type": "host",
+            "key": "│ {$4}󰌢{$1}  host"
+        },
+        {
+            "type": "kernel",
+            "key": "│ {$2}{$1}  kernel"
+        },
+        {
+            "type": "uptime",
+            "key": "│   uptime"
+        },
+        {
+            "type": "packages",
+            "key": "│ {$3}{$1}  packages"
+        },
+        {
+            "type": "shell",
+            "key": "│ {$2}{$1}  shell"
+        },
+        {
+            "type": "display",
+            "key": "│ {$3}󰍹{$1}  display"
+        },
+        {
+            "type": "de",
+            "key": "│ {$4}{$1}  de"
+        },
+        {
+            "type": "wm",
+            "key": "│ {$4}{$1}  wm"
+        },
+        {
+            "type": "wmtheme",
+            "key": "│ {$4}󰉼{$1}  wm theme"
+        },
+        {
+            "type": "theme",
+            "key": "│ {$4}󰉼{$1}  theme"
+        },
+        {
+            "type": "icons",
+            "key": "│ {$4}{$1}  icons"
+        },
+        {
+            "type": "font",
+            "key": "│ {$4}{$1}  font"
+        },
+        {
+            "type": "cursor",
+            "key": "│ {$4}󰆿{$1}  cursor"
+        },
+        {
+            "type": "terminal",
+            "key": "│ {$2}{$1}  terminal"
+        },
+        {
+            "type": "terminalfont",
+            "key": "│ {$2}{$1}  terminal font"
+        },
+        {
+            "type": "cpu",
+            "key": "│ {$3}{$1}  cpu"
+        },
+        {
+            "type": "gpu",
+            "key": "│ {$3}󰢮{$1}  gpu"
+        },
+        {
+            "type": "memory",
+            "key": "│ {$3}{$1}  memory"
+        },
+        {
+            "type": "swap",
+            "key": "│ {$3}󰓡{$1}  swap"
+        },
+        {
+            "type": "disk",
+            "key": "│ {$3}{$1}  disk"
+        },
+        {
+            "type": "localip",
+            "key": "│ {$2}󰩟{$1}  local ip"
+        },
+        {
+            "type": "battery",
+            "key": "│ {$2}󰁹{$1}  battery"
+        },
+        {
+            "type": "poweradapter",
+            "key": "│ {$2}󰚥{$1}  power"
+        },
+        {
+            "type": "locale",
+            "key": "│ {$4}{$1}  locale"
+        },
+        {
+            "type": "custom",
+            "key": "╰────────────────────────────────────────────────────────────╯"
+        },
+        "break"
+    ]
+}
