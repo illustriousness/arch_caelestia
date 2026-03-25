@@ -1,11 +1,15 @@
 #!/usr/bin/env zsh
 
+script_dir="$(cd -- "$(dirname -- "$0")" && pwd -P)"
 bootstrap_repo="$HOME/.local/share/caelestia"
 bootstrap_script="$bootstrap_repo/install.zsh"
-if [[ "${CAELESTIA_BOOTSTRAPPED:-0}" != "1" ]]; then
+if [[ "${CAELESTIA_BOOTSTRAPPED:-0}" != "1" && "$script_dir" != "$bootstrap_repo" ]]; then
   mkdir -p -- "$HOME/.local/share" || exit 1
-  rm -rf -- "$bootstrap_repo" || exit 1
-  git clone https://github.com/illustriousness/arch_caelestia.git "$bootstrap_repo" || exit 1
+
+  if [[ ! -x "$bootstrap_script" ]]; then
+    rm -rf -- "$bootstrap_repo" || exit 1
+    git clone https://github.com/illustriousness/arch_caelestia.git "$bootstrap_repo" || exit 1
+  fi
 
   cd "$bootstrap_repo" || exit 1
   CAELESTIA_BOOTSTRAPPED=1 exec zsh "$bootstrap_script" "$@"
@@ -298,7 +302,6 @@ if ! pacman -Q "$aur_helper" &>/dev/null; then
 fi
 
 # Cd into dir
-script_dir="$(cd -- "$(dirname -- "$0")" && pwd -P)"
 cd "$script_dir" || exit 1
 
 # Install metapackage for deps
@@ -329,17 +332,29 @@ if confirm_overwrite "$config/foot"; then
   ln -s -- "$(realpath foot)" "$config/foot"
 fi
 
+# Kitty
+if confirm_overwrite "$config/kitty"; then
+  log 'Installing kitty config...'
+  ln -s -- "$(realpath kitty)" "$config/kitty"
+fi
+
+# Fcitx5
+if confirm_overwrite "$config/fcitx5"; then
+  log 'Installing fcitx5 config...'
+  ln -s -- "$(realpath fcitx5)" "$config/fcitx5"
+fi
+
 # Fish
 # if confirm_overwrite "$config/fish"; then
 #   log 'Installing fish config...'
 #   ln -s -- "$(realpath fish)" "$config/fish"
 # fi
 
-# # Fastfetch
-# if confirm_overwrite "$config/fastfetch"; then
-#   log 'Installing fastfetch config...'
-#   ln -s -- "$(realpath fastfetch)" "$config/fastfetch"
-# fi
+# Fastfetch
+if confirm_overwrite "$config/fastfetch"; then
+  log 'Installing fastfetch config...'
+  ln -s -- "$(realpath fastfetch)" "$config/fastfetch"
+fi
 
 # Uwsm
 if confirm_overwrite "$config/uwsm"; then
@@ -348,10 +363,16 @@ if confirm_overwrite "$config/uwsm"; then
 fi
 
 # Btop
-# if confirm_overwrite "$config/btop"; then
-#   log 'Installing btop config...'
-#   ln -s -- "$(realpath btop)" "$config/btop"
-# fi
+if confirm_overwrite "$config/btop"; then
+  log 'Installing btop config...'
+  ln -s -- "$(realpath btop)" "$config/btop"
+fi
+
+# Zsh
+if confirm_overwrite "$HOME/.zshrc"; then
+  log 'Installing zsh config...'
+  ln -s -- "$(realpath zshrc)" "$HOME/.zshrc"
+fi
 
 # Install spicetify
 if (( flag_spotify )); then
