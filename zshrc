@@ -83,7 +83,13 @@ ZSH_THEME="robbyrussell"
 # plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
+# 放在 source $ZSH/oh-my-zsh.sh 之后
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+if [[ -n "$SSH_CONNECTION" ]]; then
+    PROMPT='%{$fg[yellow]%}%m%{$reset_color%}:'$PROMPT
+fi
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -118,6 +124,13 @@ cdls() {
 alias cd='cdls'
 alias ll='ls -hal'
 
+# Prefer bat for interactive file viewing while keeping direct terminal output.
+if (( $+commands[bat] )); then
+    cat() {
+        command bat --paging=never "$@"
+    }
+fi
+
 # code() {
 #     command /usr/bin/code --ozone-platform=x11 "$@"
 # }
@@ -138,7 +151,7 @@ yy() {
     command rm -f -- "$tmp"
 }
 source ~/.env/env.sh
-#export https_proxy=http://127.0.0.1:7897 http_proxy=http://127.0.0.1:7897 all_proxy=socks5://127.0.0.1:7897
+export https_proxy=http://127.0.0.1:7897 http_proxy=http://127.0.0.1:7897 all_proxy=socks5://127.0.0.1:7897
 
 # Ctrl+Backspace: delete previous word (Ctrl+Backspace sends ^H in foot)
 bindkey '^H' backward-kill-word
