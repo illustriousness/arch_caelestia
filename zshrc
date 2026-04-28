@@ -105,9 +105,9 @@ fi
  fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
+# Gexport ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# SGet personal aliases, overriding those provided by Oh My Zsh libs,
 # plugins, and themes. Aliases can be placed here, though Oh My Zsh
 # users are encouraged to define aliases within a top-level file in
 # the $ZSH_CUSTOM folder, with .zsh extension. Examples:
@@ -127,7 +127,7 @@ alias ll='ls -hal'
 # Prefer bat for interactive file viewing while keeping direct terminal output.
 if (( $+commands[bat] )); then
     cat() {
-        command bat --paging=never "$@"
+        command bat --style=plain --paging=never "$@"
     }
 fi
 
@@ -152,7 +152,7 @@ yy() {
 }
 source ~/.env/env.sh
 export https_proxy=http://127.0.0.1:7897 http_proxy=http://127.0.0.1:7897 all_proxy=socks5://127.0.0.1:7897
-
+#eval "$(zoxide init zsh)"
 # Ctrl+Backspace: delete previous word (Ctrl+Backspace sends ^H in foot)
 bindkey '^H' backward-kill-word
 

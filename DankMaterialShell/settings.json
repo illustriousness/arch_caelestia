@@ -135,7 +135,7 @@
   "workspaceDragReorder": true,
   "maxWorkspaceIcons": 3,
   "workspaceAppIconSizeOffset": 10,
-  "groupWorkspaceApps": true,
+  "groupWorkspaceApps": false,
   "workspaceFollowFocus": false,
   "showOccupiedWorkspacesOnly": false,
   "reverseScrolling": false,
@@ -252,7 +252,7 @@
   },
   "launcherLogoMode": "os",
   "launcherLogoCustomPath": "",
-  "launcherLogoColorOverride": "",
+  "launcherLogoColorOverride": "primary",
   "launcherLogoColorInvertOnMode": false,
   "launcherLogoBrightness": 0.5,
   "launcherLogoContrast": 1,
@@ -263,10 +263,10 @@
   "fontScale": 1,
   "notepadUseMonospace": true,
   "notepadFontFamily": "",
-  "notepadFontSize": 14,
-  "notepadShowLineNumbers": false,
-  "notepadTransparencyOverride": -1,
-  "notepadLastCustomTransparency": 0.7,
+  "notepadFontSize": 17,
+  "notepadShowLineNumbers": true,
+  "notepadTransparencyOverride": 0.8,
+  "notepadLastCustomTransparency": 0.8,
   "soundsEnabled": true,
   "useSystemSoundTheme": false,
   "soundNewNotification": true,
@@ -466,13 +466,20 @@
       ],
       "showOnLastDisplay": true,
       "leftWidgets": [
-        "workspaceSwitcher",
         {
-          "id": "music",
+          "id": "launcherButton",
+          "enabled": true
+        },
+        {
+          "id": "workspaceSwitcher",
           "enabled": true
         },
         {
           "id": "weather",
+          "enabled": true
+        },
+        {
+          "id": "music",
           "enabled": true
         },
         {
@@ -481,10 +488,6 @@
         }
       ],
       "centerWidgets": [
-        {
-          "id": "launcherButton",
-          "enabled": true
-        },
         {
           "id": "appsDock",
           "enabled": true,
@@ -527,7 +530,7 @@
       "innerPadding": 4,
       "bottomGap": 0,
       "transparency": 0,
-      "widgetTransparency": 0.4,
+      "widgetTransparency": 0.8,
       "squareCorners": false,
       "noBackground": false,
       "maximizeWidgetIcons": false,
@@ -541,7 +544,7 @@
       "borderColor": "surfaceText",
       "borderOpacity": 1,
       "borderThickness": 1,
-      "widgetOutlineEnabled": true,
+      "widgetOutlineEnabled": false,
       "widgetOutlineColor": "primary",
       "widgetOutlineOpacity": 1,
       "widgetOutlineThickness": 1,
@@ -641,7 +644,7 @@
       "name": "桌面时钟",
       "enabled": false,
       "config": {
-        "style": "analog",
+        "style": "stacked",
         "transparency": 0.8,
         "colorMode": "primary",
         "customColor": "#ffffff",
