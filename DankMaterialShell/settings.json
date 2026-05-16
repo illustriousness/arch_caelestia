@@ -232,7 +232,7 @@
   "dankLauncherV2UnloadOnClose": false,
   "useAutoLocation": false,
   "weatherEnabled": true,
-  "networkPreference": "auto",
+  "networkPreference": "wifi",
   "iconTheme": "System Default",
   "cursorSettings": {
     "theme": "System Default",
@@ -471,34 +471,21 @@
           "enabled": true
         },
         {
-          "id": "workspaceSwitcher",
-          "enabled": true
-        },
-        {
-          "id": "weather",
-          "enabled": true
-        },
-        {
-          "id": "music",
-          "enabled": true
-        },
-        {
-          "id": "focusedWindow",
-          "enabled": true
-        }
-      ],
-      "centerWidgets": [
-        {
-          "id": "appsDock",
+          "id": "runningApps",
           "enabled": true,
-          "barShowOverflowBadge": true
+          "runningAppsCompactMode": false,
+          "runningAppsGroupByApp": false,
+          "runningAppsCurrentWorkspace": false,
+          "runningAppsCurrentMonitor": false
         }
       ],
+      "centerWidgets": [],
       "rightWidgets": [
         {
           "id": "memUsage",
           "enabled": true,
           "minimumWidth": true,
+          "showSwap": false,
           "showInGb": false
         },
         {
@@ -506,16 +493,13 @@
           "enabled": true
         },
         {
-          "id": "clipboard",
-          "enabled": true
-        },
-        {
-          "id": "battery",
-          "enabled": true
-        },
-        {
           "id": "controlCenterButton",
-          "enabled": true
+          "enabled": true,
+          "showAudioIcon": false,
+          "showAudioPercent": false,
+          "showMicIcon": false,
+          "showMicPercent": false,
+          "showBatteryIcon": true
         },
         {
           "id": "clock",
@@ -530,7 +514,7 @@
       "innerPadding": 4,
       "bottomGap": 0,
       "transparency": 0,
-      "widgetTransparency": 0.8,
+      "widgetTransparency": 0.71,
       "squareCorners": false,
       "noBackground": false,
       "maximizeWidgetIcons": false,
@@ -545,18 +529,18 @@
       "borderOpacity": 1,
       "borderThickness": 1,
       "widgetOutlineEnabled": false,
-      "widgetOutlineColor": "primary",
-      "widgetOutlineOpacity": 1,
-      "widgetOutlineThickness": 1,
+      "widgetOutlineColor": "surfaceText",
+      "widgetOutlineOpacity": 0.81,
+      "widgetOutlineThickness": 7,
       "fontScale": 1,
-      "iconScale": 1.25,
+      "iconScale": 1,
       "autoHide": false,
       "autoHideDelay": 250,
       "showOnWindowsOpen": false,
       "openOnOverview": false,
       "visible": true,
       "popupGapsAuto": true,
-      "popupGapsManual": 4,
+      "popupGapsManual": 5,
       "maximizeDetection": true,
       "scrollEnabled": true,
       "scrollXBehavior": "column",

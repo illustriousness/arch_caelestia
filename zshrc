@@ -84,8 +84,8 @@ ZSH_THEME="robbyrussell"
 
 source $ZSH/oh-my-zsh.sh
 # 放在 source $ZSH/oh-my-zsh.sh 之后
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 if [[ -n "$SSH_CONNECTION" ]]; then
     PROMPT='%{$fg[yellow]%}%m%{$reset_color%}:'$PROMPT
@@ -98,12 +98,6 @@ fi
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='nvim'
- fi
-
 # Compilation flags
 # Gexport ARCHFLAGS="-arch $(uname -m)"
 
