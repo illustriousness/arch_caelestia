@@ -6,29 +6,126 @@ local HYPR = HOME .. "/.config/hypr"
 
 hl.monitor({ output = "", mode = "highrr", position = "auto", scale = 1 })
 
+-- 系统默认语言
+-- 大多数程序读取的主 locale
+-- 决定：
+--   UI语言
+--   日期格式
+--   排序规则
+--   编码
 hl.env("LANG", "zh_CN.UTF-8")
-hl.env("LC_ALL", "zh_CN.UTF-8")
+
+-- GNU gettext 使用的语言优先级
+-- 表示：
+--   优先中文
+--   找不到则 fallback zh
 hl.env("LANGUAGE", "zh_CN:zh")
-hl.env("LC_CTYPE", "zh_CN.UTF-8")
+
+
+hl.env("EDITOR", "nvim")
+hl.env("VISUAL", "nvim")
+
+-- 字符类型 locale
+-- 决定：
+--   UTF-8字符处理
+--   中文输入
+--   宽字符
+--   emoji
+-- 很重要
+-- hl.env("LC_CTYPE", "zh_CN.UTF-8")
+
+-- Qt 使用 qt6ct 管理主题
+-- 否则 Qt 程序可能不跟系统主题
+-- 影响：
+--   KDE程序
+--   Qt应用
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
+
+-- 禁止 Qt Wayland 客户端自己绘制窗口装饰
+-- 让 Hyprland 接管边框
+-- 避免：
+--   双标题栏
+--   双边框
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
+
+-- Qt 自动 DPI 缩放
+-- 适合 HiDPI
+-- 但很多 Hyprland 用户会关闭
+-- 因为容易双重缩放
 hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
+
+-- 鼠标主题
 hl.env("XCURSOR_THEME", "sweet-cursors")
+
+-- 鼠标大小
 hl.env("XCURSOR_SIZE", "24")
+
+-- GTK 后端优先级
+-- 优先：
+--   Wayland
+-- fallback：
+--   X11
+-- 影响：
+--   Nautilus
+--   Zen Browser
+--   GTK app
 hl.env("GDK_BACKEND", "wayland,x11")
+
+-- Qt 平台后端
+-- Wayland优先
+-- xcb(X11)兜底
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
+
+-- SDL 图形后端
+-- 游戏/模拟器常用
+-- Wayland优先
 hl.env("SDL_VIDEODRIVER", "wayland,x11,windows")
+
+-- GNOME Clutter 后端
+-- Wayland优先
 hl.env("CLUTTER_BACKEND", "wayland")
-hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+
+-- Electron(Ozone) 平台自动检测
+-- Electron程序：
+--   VSCode
+--   Discord
+--   Obsidian
+--   微信
+-- 会尝试自动选择：
+--   Wayland/X11
+-- hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+
+-- GTK 输入法模块
+-- fcitx 输入法支持
 hl.env("GTK_IM_MODULE", "fcitx")
+
+-- Qt 输入法模块
 hl.env("QT_IM_MODULE", "fcitx")
+
+-- X11 输入法协议变量
+-- 即使 Wayland 下很多程序仍会读取
 hl.env("XMODIFIERS", "@im=fcitx")
+
+-- SDL 输入法模块
+-- 游戏输入中文
 hl.env("SDL_IM_MODULE", "fcitx")
-hl.env("GLFW_IM_MODULE", "ibus")
+
+-- 当前桌面环境
+-- 很多程序通过它判断：
+--   当前 DE/WM
+-- 用于 portal/主题/行为适配
 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
+
+-- 当前 session 类型
+-- 标识：
+--   wayland
+-- 而不是 x11
 hl.env("XDG_SESSION_TYPE", "wayland")
+
+-- 当前 session 桌面名
+-- portal/dbus 会读取
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
-hl.env("_JAVA_AWT_WM_NONREPARENTING", "1")
+
 
 hl.config({
   general = {
@@ -47,7 +144,7 @@ hl.config({
   master = { mfact = 0.60 },
   scrolling = {
     column_width = 0.5,
-    explicit_column_widths = "0.5, 0.75, 1.0",
+    explicit_column_widths = "0.5,  1.0",
     fullscreen_on_one_column = true,
     focus_fit_method = 1,
     follow_focus = true,
@@ -164,19 +261,15 @@ hl.gesture({ fingers = 4, direction = "down", action = function() hl.exec_cmd("s
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("dbus-update-activation-environment --systemd --all && systemctl --user start hyprland-session.target")
-  hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
-  hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
   hl.exec_cmd("wl-paste --type text --watch cliphist store")
   hl.exec_cmd("wl-paste --type image --watch cliphist store")
-  hl.exec_cmd("hyprctl setcursor sweet-cursors 24")
-  hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-theme 'sweet-cursors'")
-  hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size 24")
+
   hl.exec_cmd("mpris-proxy")
   hl.exec_cmd("blueman-applet")
   hl.exec_cmd("systemctl --user start dms")
   hl.exec_cmd("clash-verge -d")
   hl.exec_cmd("fcitx5 -d")
-  hl.exec_cmd("~/.config/hypr/scripts/external-only.sh")
+  -- hl.exec_cmd("~/.config/hypr/scripts/external-only.sh")
 end)
 hl.on("hyprland.shutdown", function()
   hl.exec_cmd("systemctl --user stop hyprland-session.target")
@@ -286,18 +379,20 @@ hl.bind("SUPER + Page_Down", hl.dsp.focus({ workspace = "+1" }), { repeating = t
 hl.bind("ALT + Tab", hl.dsp.layout("focus r"), { repeating = true })
 hl.bind("SUPER + left", hl.dsp.layout("focus l"))
 hl.bind("SUPER + right", hl.dsp.layout("focus r"))
-hl.bind("SUPER + U", hl.dsp.layout("promote"))
-hl.bind("SUPER + Return", hl.dsp.layout("promote"))
-hl.bind("SUPER + R", hl.dsp.layout("colresize +conf"))
+hl.bind("SUPER + SHIFT + left", hl.dsp.layout("swapcol l"))
+hl.bind("SUPER + SHIFT + right", hl.dsp.layout("swapcol r"))
+
+hl.bind("SUPER + F", hl.dsp.layout("colresize +conf"))
 
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
-hl.bind("SUPER + F", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
+-- hl.bind("SUPER + F", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
 hl.bind("SUPER + Space", hl.dsp.window.float({ action = "toggle" }))
 hl.bind("SUPER + T", hl.dsp.exec_cmd("kitty"))
 
-hl.bind("SUPER + G", hl.dsp.exec_cmd("dms ipc call hypr toggleOverview"))
+-- hl.bind("SUPER + G", hl.dsp.exec_cmd("dms ipc call hypr toggleOverview"))
+hl.bind("SUPER + G", hl.dsp.exec_cmd("/home/lyc/.local/share/caelestia/hypr/scripts/window-picker.sh"))
 hl.bind("SUPER + E", hl.dsp.exec_cmd("app2unit -- thunar & sleep .3; caelestia resizer Thunar titleContains 86% 86% float,center"))
 
 hl.bind("Print", hl.dsp.exec_cmd("dms screenshot"))
@@ -306,3 +401,4 @@ hl.bind("ALT + Print", hl.dsp.exec_cmd("dms screenshot window --stdout | swappy 
 hl.bind("CTRL + ALT + a", hl.dsp.exec_cmd("grim -g \"$(slurp -d)\" - | wl-copy"))
 hl.bind("SUPER + p", hl.dsp.exec_cmd("[float;pin] sh -c 'f=$(mktemp --suffix=.png /tmp/hypr-pinshot.XXXXXX); grim -g \"$(slurp -d)\" \"$f\" && imv \"$f\"; rm -f \"$f\"'"))
 hl.bind("SUPER + D", hl.dsp.exec_cmd("[float;center;size 1000 600;noanim;noborder;noshadow] wofi --show drun --allow-images --normal-window --width 1000 --height 600"))
+
